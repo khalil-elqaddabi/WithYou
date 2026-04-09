@@ -80,4 +80,5 @@ class WorkspaceController extends Controller
             ->route('teacher.workspaces.index')
             ->with('success', 'Workspace deleted successfully.');
     }
+    
 }
