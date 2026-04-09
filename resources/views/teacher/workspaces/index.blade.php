@@ -49,6 +49,10 @@
                                     Delete
                                 </button>
                             </form>
+
+                            <a href="{{ route('teacher.workspaces.courses.index', $workspace) }}" class="px-3 py-1 bg-indigo-600 text-white rounded">
+    Courses
+</a>
                         </div>
                     </div>
                 @empty

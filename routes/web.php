@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Teacher\CourseController;
 use App\Http\Controllers\Teacher\WorkspaceController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,24 @@ Route::middleware(['auth'])->group(function () {
 
         Route::resource('teacher/workspaces', WorkspaceController::class)
             ->names('teacher.workspaces');
+
+        Route::get('teacher/workspaces/{workspace}/courses', [CourseController::class, 'index'])
+            ->name('teacher.workspaces.courses.index');
+
+        Route::get('teacher/workspaces/{workspace}/courses/create', [CourseController::class, 'create'])
+            ->name('teacher.workspaces.courses.create');
+
+        Route::post('teacher/workspaces/{workspace}/courses', [CourseController::class, 'store'])
+            ->name('teacher.workspaces.courses.store');
+
+        Route::get('teacher/workspaces/{workspace}/courses/{course}/edit', [CourseController::class, 'edit'])
+            ->name('teacher.workspaces.courses.edit');
+
+        Route::put('teacher/workspaces/{workspace}/courses/{course}', [CourseController::class, 'update'])
+            ->name('teacher.workspaces.courses.update');
+
+        Route::delete('teacher/workspaces/{workspace}/courses/{course}', [CourseController::class, 'destroy'])
+            ->name('teacher.workspaces.courses.destroy');
     });
 
     Route::middleware('role:student')->group(function () {
@@ -45,4 +64,4 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
