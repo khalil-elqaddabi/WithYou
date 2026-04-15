@@ -24,4 +24,11 @@ class Workspace extends Model
     {
         return $this->hasMany(Course::class);
     }
+
+    public function students()
+{
+    return $this->belongsToMany(User::class, 'student_workspace', 'workspace_id', 'student_id')
+        ->withPivot('joined_at')
+        ->withTimestamps();
+}
 }
