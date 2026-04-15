@@ -2,8 +2,12 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Teacher\CourseController;
+use App\Http\Controllers\Teacher\DashboardController;
+use App\Http\Controllers\Teacher\LessonController;
 use App\Http\Controllers\Teacher\WorkspaceController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Teacher\ExerciseController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,9 +31,8 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware('role:teacher')->group(function () {
-        Route::get('/teacher/dashboard', function () {
-            return view('teacher.dashboard');
-        })->name('teacher.dashboard');
+        Route::get('/teacher/dashboard', [DashboardController::class, 'index'])
+            ->name('teacher.dashboard');
 
         Route::resource('teacher/workspaces', WorkspaceController::class)
             ->names('teacher.workspaces');
@@ -51,6 +54,40 @@ Route::middleware(['auth'])->group(function () {
 
         Route::delete('teacher/workspaces/{workspace}/courses/{course}', [CourseController::class, 'destroy'])
             ->name('teacher.workspaces.courses.destroy');
+
+        Route::get('teacher/workspaces/{workspace}/courses/{course}/lessons', [LessonController::class, 'index'])
+            ->name('teacher.courses.lessons.index');
+
+        Route::get('teacher/workspaces/{workspace}/courses/{course}/lessons/create', [LessonController::class, 'create'])
+            ->name('teacher.courses.lessons.create');
+
+        Route::post('teacher/workspaces/{workspace}/courses/{course}/lessons', [LessonController::class, 'store'])
+            ->name('teacher.courses.lessons.store');
+
+        Route::get('teacher/workspaces/{workspace}/courses/{course}/lessons/{lesson}', [LessonController::class, 'show'])
+            ->name('teacher.courses.lessons.show');
+
+        Route::get('teacher/workspaces/{workspace}/courses/{course}/lessons/{lesson}/edit', [LessonController::class, 'edit'])
+            ->name('teacher.courses.lessons.edit');
+
+        Route::put('teacher/workspaces/{workspace}/courses/{course}/lessons/{lesson}', [LessonController::class, 'update'])
+            ->name('teacher.courses.lessons.update');
+
+        Route::delete('teacher/workspaces/{workspace}/courses/{course}/lessons/{lesson}', [LessonController::class, 'destroy'])
+            ->name('teacher.courses.lessons.destroy');
+
+
+        Route::get('teacher/workspaces/{workspace}/courses/{course}/lessons/{lesson}/exercises', [ExerciseController::class, 'index'])
+            ->name('teacher.lessons.exercises.index');
+
+        Route::get('teacher/workspaces/{workspace}/courses/{course}/lessons/{lesson}/exercises/create', [ExerciseController::class, 'create'])
+            ->name('teacher.lessons.exercises.create');
+
+        Route::post('teacher/workspaces/{workspace}/courses/{course}/lessons/{lesson}/exercises', [ExerciseController::class, 'store'])
+            ->name('teacher.lessons.exercises.store');
+
+        Route::delete('teacher/workspaces/{workspace}/courses/{course}/lessons/{lesson}/exercises/{exercise}', [ExerciseController::class, 'destroy'])
+            ->name('teacher.lessons.exercises.destroy');
     });
 
     Route::middleware('role:student')->group(function () {
