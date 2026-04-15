@@ -1,64 +1,51 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            My Workspaces
-        </h2>
-    </x-slot>
+<x-layouts.teacher.app>
+    <x-slot name="title">My Workspaces</x-slot>
+    <x-slot name="header">My Workspaces</x-slot>
+    <x-slot name="subheader">Manage all your teaching spaces</x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
-            @if (session('success'))
-                <div class="mb-4 rounded bg-green-100 p-4 text-green-700">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            <div class="mb-4">
-                <a href="{{ route('teacher.workspaces.create') }}"
-                   class="rounded bg-blue-600 px-4 py-2 text-white">
-                    Create Workspace
-                </a>
-            </div>
-
-            <div class="bg-white shadow-sm rounded-lg p-6">
-                @forelse ($workspaces as $workspace)
-                    <div class="border-b py-4 flex items-center justify-between">
-                        <div>
-                            <h3 class="text-lg font-semibold">{{ $workspace->name }}</h3>
-                            <p class="text-gray-600">{{ $workspace->subject }}</p>
-                        </div>
-
-                        <div class="flex gap-2">
-                            <a href="{{ route('teacher.workspaces.show', $workspace) }}"
-                               class="rounded bg-green-600 px-3 py-1 text-white">
-                                View
-                            </a>
-
-                            <a href="{{ route('teacher.workspaces.edit', $workspace) }}"
-                               class="rounded bg-yellow-500 px-3 py-1 text-white">
-                                Edit
-                            </a>
-
-                            <form action="{{ route('teacher.workspaces.destroy', $workspace) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                        class="rounded bg-red-600 px-3 py-1 text-white"
-                                        onclick="return confirm('Are you sure?')">
-                                    Delete
-                                </button>
-                            </form>
-
-                            <a href="{{ route('teacher.workspaces.courses.index', $workspace) }}" class="px-3 py-1 bg-indigo-600 text-white rounded">
-    Courses
-</a>
-                        </div>
-                    </div>
-                @empty
-                    <p>No workspaces found.</p>
-                @endforelse
-            </div>
+    @if(session('success'))
+        <div class="mb-4 p-4 bg-green-100 text-green-700 rounded">
+            {{ session('success') }}
         </div>
+    @endif
+
+    <div class="mb-4">
+        <a href="{{ route('teacher.workspaces.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded">
+            Create Workspace
+        </a>
     </div>
-</x-app-layout>
+
+    <div class="bg-white shadow-sm rounded-lg p-6">
+        @forelse($workspaces as $workspace)
+            <div class="border-b py-4 flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold">{{ $workspace->name }}</h3>
+                    <p class="text-gray-600">{{ $workspace->subject }}</p>
+                </div>
+
+                <div class="flex gap-2">
+                    <a href="{{ route('teacher.workspaces.courses.index', $workspace) }}"
+                       class="px-3 py-1 bg-indigo-600 text-white rounded">
+                        Courses
+                    </a>
+
+                    <a href="{{ route('teacher.workspaces.edit', $workspace) }}"
+                       class="px-3 py-1 bg-yellow-500 text-white rounded">
+                        Edit
+                    </a>
+
+                    <form action="{{ route('teacher.workspaces.destroy', $workspace) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button class="px-3 py-1 bg-red-600 text-white rounded"
+                                onclick="return confirm('Are you sure?')">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        @empty
+            <p>No workspaces found.</p>
+        @endforelse
+    </div>
+</x-layouts.teacher.app>
