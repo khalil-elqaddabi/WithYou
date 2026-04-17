@@ -26,9 +26,14 @@ class Workspace extends Model
     }
 
     public function students()
-{
-    return $this->belongsToMany(User::class, 'student_workspace', 'workspace_id', 'student_id')
-        ->withPivot('joined_at')
-        ->withTimestamps();
-}
+    {
+        return $this->belongsToMany(User::class, 'student_workspace', 'workspace_id', 'student_id')
+            ->withPivot('joined_at')
+            ->withTimestamps();
+    }
+
+    public function chatMessages()
+    {
+        return $this->hasMany(ChatMessage::class)->latest();
+    }
 }
