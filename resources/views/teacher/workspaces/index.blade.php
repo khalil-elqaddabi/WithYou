@@ -3,7 +3,7 @@
     <x-slot name="header">My Workspaces</x-slot>
     <x-slot name="subheader">Manage all your teaching spaces</x-slot>
 
-    @if(session('success'))
+    @if (session('success'))
         <div class="mb-4 p-4 bg-green-100 text-green-700 rounded">
             {{ session('success') }}
         </div>
@@ -24,13 +24,17 @@
                 </div>
 
                 <div class="flex gap-2">
+                    <a href="{{ route('teacher.workspaces.show', $workspace->id) }}"
+                        class="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600">
+                        View
+                    </a>
                     <a href="{{ route('teacher.workspaces.courses.index', $workspace) }}"
-                       class="px-3 py-1 bg-indigo-600 text-white rounded">
+                        class="px-3 py-1 bg-indigo-600 text-white rounded">
                         Courses
                     </a>
 
                     <a href="{{ route('teacher.workspaces.edit', $workspace) }}"
-                       class="px-3 py-1 bg-yellow-500 text-white rounded">
+                        class="px-3 py-1 bg-yellow-500 text-white rounded">
                         Edit
                     </a>
 
@@ -38,7 +42,7 @@
                         @csrf
                         @method('DELETE')
                         <button class="px-3 py-1 bg-red-600 text-white rounded"
-                                onclick="return confirm('Are you sure?')">
+                            onclick="return confirm('Are you sure?')">
                             Delete
                         </button>
                     </form>
