@@ -47,7 +47,19 @@ class User extends Authenticatable
         ];
     }
     public function workspaces()
-{
-    return $this->hasMany(Workspace::class, 'teacher_id');
-}
+    {
+        return $this->belongsToMany(Workspace::class, 'student_workspace', 'student_id', 'workspace_id')
+            ->withPivot('joined_at')
+            ->withTimestamps();
+    }
+
+    public function ownedWorkspaces()
+    {
+        return $this->hasMany(Workspace::class, 'teacher_id');
+    }
+
+    public function chatMessages()
+    {
+        return $this->hasMany(ChatMessage::class, 'sender_id');
+    }
 }

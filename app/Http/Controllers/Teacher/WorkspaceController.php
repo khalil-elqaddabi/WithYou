@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Teacher;
 
+
+
 use App\Http\Controllers\Controller;
 use App\Models\Workspace;
+use App\Models\User;
+use App\Models\ChatMessage;
 use Illuminate\Http\Request;
 
 class WorkspaceController extends Controller
@@ -44,9 +48,10 @@ class WorkspaceController extends Controller
     {
         abort_if($workspace->teacher_id !== auth()->id(), 403);
 
+        $workspace->load('students');
+
         return view('teacher.workspaces.show', compact('workspace'));
     }
-
     public function edit(Workspace $workspace)
     {
         abort_if($workspace->teacher_id !== auth()->id(), 403);
@@ -80,5 +85,69 @@ class WorkspaceController extends Controller
             ->route('teacher.workspaces.index')
             ->with('success', 'Workspace deleted successfully.');
     }
-    
+
+    public function addStudent(Request $request, Workspace $workspace)
+    {
+        abort_if($workspace->teacher_id !== auth()->id(), 403);
+
+        $request->validate([
+            'email' => ['required', 'email'],
+        ]);
+
+        $student = User::where('email', $request->email)
+            ->where('role', 'student')
+            ->first();
+
+        if (!$student) {
+            return back()->with('error', 'Student not found.');
+        }
+
+        if ($workspace->students()->where('users.id', $student->id)->exists()) {
+            return back()->with('error', 'Student is already in this workspace.');
+        }
+
+        $workspace->students()->attach($student->id, [
+            'joined_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return back()->with('success', 'Student added successfully.');
+    }
+
+    public function removeStudent(Workspace $workspace, User $student)
+    {
+        abort_if($workspace->teacher_id !== auth()->id(), 403);
+
+        $workspace->students()->detach($student->id);
+
+        return back()->with('success', 'Student removed successfully.');
+    }
+
+    public function room(Workspace $workspace)
+    {
+        abort_if($workspace->teacher_id !== auth()->id(), 403);
+
+        $workspace->load(['chatMessages.sender']);
+
+        return view('room', compact('workspace'));
+    }
+
+    public function sendMessage(Request $request, Workspace $workspace)
+    {
+        abort_if($workspace->teacher_id !== auth()->id(), 403);
+
+        $request->validate([
+            'message' => ['required', 'string'],
+        ]);
+
+        ChatMessage::create([
+            'sender_id' => auth()->id(),
+            'workspace_id' => $workspace->id,
+            'message' => $request->message,
+            'sent_at' => now(),
+        ]);
+
+        return back();
+    }
 }
