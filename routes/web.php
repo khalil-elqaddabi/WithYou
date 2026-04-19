@@ -30,7 +30,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Chat (teacher + student)
     Route::post('/workspaces/{workspace}/chat', [StudentDashboardController::class, 'sendMessage'])
-    ->name('workspaces.chat.store');
+        ->name('workspaces.chat.store');
 
     // ================= ADMIN =================
     Route::middleware('role:admin')->group(function () {
@@ -119,6 +119,21 @@ Route::middleware(['auth'])->group(function () {
 
         Route::delete('teacher/workspaces/{workspace}/courses/{course}/lessons/{lesson}/exercises/{exercise}', [ExerciseController::class, 'destroy'])
             ->name('teacher.lessons.exercises.destroy');
+
+        Route::get('/teacher/workspaces/{workspace}/call', function ($workspace) {
+            return view('call', [
+                'roomID' => 'workspace-' . $workspace,
+            ]);
+        })->name('teacher.call');
+
+        Route::post('/teacher/workspaces/{workspace}/start-call', [WorkspaceController::class, 'startCall'])
+            ->name('teacher.call.start');
+
+        Route::post('/teacher/workspaces/{workspace}/end-call', [WorkspaceController::class, 'endCall'])
+            ->name('teacher.call.end');
+
+        Route::get('/teacher/workspaces/{workspace}/call', [WorkspaceController::class, 'call'])
+            ->name('teacher.call');
     });
 
     // ================= STUDENT =================
@@ -150,6 +165,15 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/student/workspaces/{workspace}/courses/{course}/lessons/{lesson}/exercises', [StudentDashboardController::class, 'showExercises'])
             ->name('student.exercises.index');
+
+        Route::get('/student/workspaces/{workspace}/call', function ($workspace) {
+            return view('call', [
+                'roomID' => 'workspace-' . $workspace,
+            ]);
+        })->name('student.call');
+
+        Route::get('/student/workspaces/{workspace}/call', [StudentDashboardController::class, 'joinCall'])
+            ->name('student.call');
     });
 
     // Profile
