@@ -13,6 +13,7 @@ class Workspace extends Model
         'name',
         'subject',
         'teacher_id',
+        'call_active',
     ];
 
     public function teacher()
