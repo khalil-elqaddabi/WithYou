@@ -90,31 +90,44 @@ class DashboardController extends Controller
     }
 
 
-public function sendMessage(Request $request, Workspace $workspace)
-{
-    $user = auth()->user();
+    public function sendMessage(Request $request, Workspace $workspace)
+    {
+        $user = auth()->user();
 
-    if ($user->role === 'student') {
-        abort_if(!$user->workspaces()->where('workspaces.id', $workspace->id)->exists(), 403);
+        if ($user->role === 'student') {
+            abort_if(!$user->workspaces()->where('workspaces.id', $workspace->id)->exists(), 403);
+        }
+
+        if ($user->role === 'teacher') {
+            abort_if($workspace->teacher_id !== $user->id, 403);
+        }
+
+        $request->validate([
+            'message' => ['required', 'string'],
+        ]);
+
+        $message = ChatMessage::create([
+            'sender_id' => $user->id,
+            'workspace_id' => $workspace->id,
+            'message' => $request->message,
+            'sent_at' => now(),
+        ]);
+
+        broadcast(new MessageSent($message));
+
+        return back();
     }
 
-    if ($user->role === 'teacher') {
-        abort_if($workspace->teacher_id !== $user->id, 403);
+    public function joinCall(Workspace $workspace)
+    {
+        $student = auth()->user();
+
+        abort_if(!$student->workspaces()->where('workspaces.id', $workspace->id)->exists(), 403);
+        abort_if(!$workspace->call_active, 403);
+
+        return view('call', [
+            'roomID' => 'workspace-' . $workspace->id,
+            'workspace' => $workspace,
+        ]);
     }
-
-    $request->validate([
-        'message' => ['required', 'string'],
-    ]);
-
-    $message = ChatMessage::create([
-        'sender_id' => $user->id,
-        'workspace_id' => $workspace->id,
-        'message' => $request->message,
-        'sent_at' => now(),
-    ]);
-
-    broadcast(new MessageSent($message));
-
-    return back();
-}
 }

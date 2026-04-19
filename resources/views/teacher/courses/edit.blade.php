@@ -5,6 +5,10 @@
 
     <div class="max-w-3xl">
         <div class="bg-white shadow-sm rounded-lg p-6">
+            <a href="{{ route('teacher.workspaces.index', $workspace->id) }}"
+   class="inline-flex items-center bg-gray-200 text-gray-700 px-4 py-2 rounded-xl hover:bg-gray-300">
+    ← Back to Workspace
+</a>
             <form method="POST" action="{{ route('teacher.workspaces.courses.update', [$workspace, $course]) }}">
                 @csrf
                 @method('PUT')

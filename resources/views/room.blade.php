@@ -12,8 +12,12 @@
                     Subject: {{ $workspace->subject ?? 'No subject' }}
                 </p>
             </div>
+<a href="{{ auth()->user()->role === 'teacher' ? route('teacher.workspaces.index') : route('student.dashboard') }}"
+   class="inline-flex items-center bg-gray-200 text-gray-700 px-4 py-2 rounded-xl hover:bg-gray-300">
+    ← Back to Workspaces
+</a>
 
-            {{-- Success / Error Messages --}}
+            {{-- Flash Messages --}}
             @if(session('success'))
                 <div class="bg-green-50 border border-green-200 text-green-700 rounded-xl px-4 py-3">
                     {{ session('success') }}
@@ -60,8 +64,7 @@
                     >
                     <button
                         type="submit"
-                        class="bg-indigo-600 text-white px-4 py-2 rounded-xl hover:bg-indigo-700"
-                    >
+                        class="bg-indigo-600 text-white px-4 py-2 rounded-xl hover:bg-indigo-700">
                         Send
                     </button>
                 </form>
@@ -74,46 +77,155 @@
                 </h2>
 
                 @if(auth()->user()->role === 'teacher')
-                    <a href="{{ route('teacher.call', $workspace->id) }}"
-                       class="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700">
-                        Start Call
-                    </a>
+                    <div id="teacher-call-wrapper">
+                        @if(!$workspace->call_active)
+                            <form action="{{ route('teacher.call.start', $workspace->id) }}" method="POST">
+                                @csrf
+                                <button type="submit"
+                                    class="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700">
+                                    Start Call
+                                </button>
+                            </form>
+                        @else
+                            <div class="flex items-center gap-3">
+                                <a href="{{ route('teacher.call', $workspace->id) }}"
+                                   class="inline-flex items-center bg-indigo-600 text-white px-4 py-2 rounded-xl hover:bg-indigo-700">
+                                    Open Active Call
+                                </a>
+
+                                <form action="{{ route('teacher.call.end', $workspace->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="inline-flex items-center bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700">
+                                        End Call
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
+                    </div>
                 @else
-                    <a href="{{ route('student.call', $workspace->id) }}"
-                       class="inline-flex items-center bg-indigo-600 text-white px-4 py-2 rounded-xl hover:bg-indigo-700">
-                        Join Call
-                    </a>
+                    <div id="join-call-wrapper">
+                        @if($workspace->call_active)
+                            <a href="{{ route('student.call', $workspace->id) }}"
+                               id="join-call-btn"
+                               class="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700">
+                                Join Call
+                            </a>
+                        @else
+                            <button
+                                id="join-call-btn"
+                                class="inline-flex items-center bg-gray-300 text-gray-600 px-4 py-2 rounded-xl cursor-not-allowed"
+                                disabled>
+                                Join Call
+                            </button>
+                            <p id="call-status-text" class="text-sm text-gray-500 mt-2">
+                                The teacher has not started the call yet.
+                            </p>
+                        @endif
+                    </div>
                 @endif
             </div>
 
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const chatBox = document.getElementById('chat-box');
+ <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const chatBox = document.getElementById('chat-box');
 
-            window.Echo
-                .channel('workspace.{{ $workspace->id }}')
-                .listen('.message.sent', (e) => {
-                    const emptyText = document.getElementById('empty-chat-text');
-                    if (emptyText) emptyText.remove();
-
-                    chatBox.innerHTML += `
-                        <div class="border rounded-xl p-3">
-                            <p class="text-sm font-semibold text-gray-800">
-                                ${e.message.sender?.name ?? 'User'}
-                            </p>
-                            <p class="text-sm text-gray-600 mt-1">
-                                ${e.message.message}
-                            </p>
-                        </div>
-                    `;
-
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                });
-
+        if (chatBox) {
             chatBox.scrollTop = chatBox.scrollHeight;
-        });
-    </script>
+        }
+
+        window.Echo
+            .channel('workspace.{{ $workspace->id }}')
+
+            .listen('.message.sent', (e) => {
+                const emptyText = document.getElementById('empty-chat-text');
+                if (emptyText) emptyText.remove();
+
+                chatBox.innerHTML += `
+                    <div class="border rounded-xl p-3">
+                        <p class="text-sm font-semibold text-gray-800">
+                            ${e.message.sender?.name ?? 'User'}
+                        </p>
+                        <p class="text-sm text-gray-600 mt-1">
+                            ${e.message.message}
+                        </p>
+                    </div>
+                `;
+
+                chatBox.scrollTop = chatBox.scrollHeight;
+            })
+
+            .listen('.call.status.changed', (e) => {
+                const joinWrapper = document.getElementById('join-call-wrapper');
+                const teacherWrapper = document.getElementById('teacher-call-wrapper');
+
+                // Student UI
+                if (joinWrapper) {
+                    if (e.callActive) {
+                        joinWrapper.innerHTML = `
+                            <a href="/student/workspaces/{{ $workspace->id }}/call"
+                               id="join-call-btn"
+                               class="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700">
+                                Join Call
+                            </a>
+                        `;
+                    } else {
+                        joinWrapper.innerHTML = `
+                            <button
+                                id="join-call-btn"
+                                class="inline-flex items-center bg-gray-300 text-gray-600 px-4 py-2 rounded-xl cursor-not-allowed"
+                                disabled>
+                                Join Call
+                            </button>
+                            <p id="call-status-text" class="text-sm text-gray-500 mt-2">
+                                The teacher has not started the call yet.
+                            </p>
+                        `;
+                    }
+                }
+
+                // Teacher UI
+                if (teacherWrapper) {
+                    if (e.callActive) {
+                        teacherWrapper.innerHTML = `
+                            <div class="flex items-center gap-3">
+                                <a href="/teacher/workspaces/{{ $workspace->id }}/call"
+                                   class="inline-flex items-center bg-indigo-600 text-white px-4 py-2 rounded-xl hover:bg-indigo-700">
+                                    Open Active Call
+                                </a>
+
+                                <form action="/teacher/workspaces/{{ $workspace->id }}/end-call" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="inline-flex items-center bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700">
+                                        End Call
+                                    </button>
+                                </form>
+                            </div>
+                        `;
+                    } else {
+                        teacherWrapper.innerHTML = `
+                            <form action="/teacher/workspaces/{{ $workspace->id }}/start-call" method="POST">
+                                @csrf
+                                <button type="submit"
+                                    class="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700">
+                                    Start Call
+                                </button>
+                            </form>
+                        `;
+                    }
+                }
+            });
+    });
+</script>
+<script>
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+</script>
 </x-app-layout>

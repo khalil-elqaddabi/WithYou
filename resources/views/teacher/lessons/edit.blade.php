@@ -4,7 +4,12 @@
     <x-slot name="subheader">Update lesson information</x-slot>
 
     <div class="max-w-4xl">
+        <a href="{{ route('teacher.workspaces.courses.index', $workspace->id) }}"
+   class="inline-flex items-center bg-gray-200 text-gray-700 px-4 py-2 rounded-xl hover:bg-gray-300">
+    ← Back to Courses
+</a>
         <div class="bg-white shadow-sm rounded-lg p-6">
+
             <form method="POST"
                   action="{{ route('teacher.courses.lessons.update', [$workspace, $course, $lesson]) }}"
                   enctype="multipart/form-data">

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Workspace;
 use App\Models\User;
 use App\Models\ChatMessage;
+use App\Events\CallStatusChanged;
 use Illuminate\Http\Request;
 
 class WorkspaceController extends Controller
@@ -149,5 +150,42 @@ class WorkspaceController extends Controller
         ]);
 
         return back();
+    }
+
+
+ public function startCall(Workspace $workspace)
+{
+    abort_if($workspace->teacher_id !== auth()->id(), 403);
+
+    $workspace->update([
+        'call_active' => true,
+    ]);
+
+    broadcast(new CallStatusChanged($workspace))->toOthers();
+
+    return redirect()->route('teacher.call', $workspace->id);
+}
+
+ public function endCall(Workspace $workspace)
+{
+    abort_if($workspace->teacher_id !== auth()->id(), 403);
+
+    $workspace->update([
+        'call_active' => false,
+    ]);
+
+    broadcast(new CallStatusChanged($workspace))->toOthers();
+
+    return redirect()->route('teacher.room', $workspace->id);
+}
+
+    public function call(Workspace $workspace)
+    {
+        abort_if($workspace->teacher_id !== auth()->id(), 403);
+
+        return view('call', [
+            'roomID' => 'workspace-' . $workspace->id,
+            'workspace' => $workspace,
+        ]);
     }
 }

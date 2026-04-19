@@ -4,6 +4,10 @@
     <x-slot name="subheader">Create a new question for {{ $lesson->title }}</x-slot>
 
     <div class="bg-white p-6 rounded shadow max-w-2xl">
+        <a href="{{ route('teacher.courses.lessons.index', [$workspace, $course]) }}"
+   class="inline-flex items-center bg-gray-200 text-gray-700 px-4 py-2 rounded-xl hover:bg-gray-300">
+    ← Back to Lessons
+</a>
         <form method="POST"
               action="{{ route('teacher.lessons.exercises.store', [$workspace, $course, $lesson]) }}">
             @csrf

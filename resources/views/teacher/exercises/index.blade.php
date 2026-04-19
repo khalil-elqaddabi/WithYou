@@ -8,6 +8,10 @@
             {{ session('success') }}
         </div>
     @endif
+    <a href="{{ route('teacher.courses.lessons.index', [$workspace, $course]) }}"
+   class="inline-flex items-center bg-gray-200 text-gray-700 px-4 py-2 rounded-xl hover:bg-gray-300">
+    ← Back to Lessons
+</a>
 
     <div class="mb-4">
         <a href="{{ route('teacher.lessons.exercises.create', [$workspace, $course, $lesson]) }}"

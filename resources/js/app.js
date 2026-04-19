@@ -1,8 +1,4 @@
 import './bootstrap';
-import './auth';
+import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 
-import Alpine from 'alpinejs';
-
-window.Alpine = Alpine;
-
-Alpine.start();
+window.ZegoUIKitPrebuilt = ZegoUIKitPrebuilt;
