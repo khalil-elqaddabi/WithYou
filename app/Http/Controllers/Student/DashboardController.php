@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Workspace;
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Exercise;
 use App\Models\ChatMessage;
 use Illuminate\Http\Request;
 use App\Events\MessageSent;
@@ -15,9 +16,25 @@ class DashboardController extends Controller
     public function index()
     {
         $student = auth()->user();
-        $workspaces = $student->workspaces()->latest()->get();
 
-        return view('student.dashboard', compact('workspaces'));
+        $workspaces = $student->workspaces()
+            ->with('teacher')
+            ->latest()
+            ->get();
+
+        $workspaceIds = $workspaces->pluck('id');
+
+        $lessons = Lesson::whereHas('course', function ($query) use ($workspaceIds) {
+            $query->whereIn('workspace_id', $workspaceIds);
+        })
+        ->latest()
+        ->get();
+
+        $lessonIds = $lessons->pluck('id');
+
+        $exercisesCount = Exercise::whereIn('lesson_id', $lessonIds)->count();
+
+        return view('student.dashboard', compact('workspaces', 'lessons', 'exercisesCount'));
     }
 
     public function leaveWorkspace(Workspace $workspace)
@@ -76,8 +93,6 @@ class DashboardController extends Controller
         return view('student.exercises.index', compact('workspace', 'course', 'lesson'));
     }
 
-
-
     public function room(Workspace $workspace)
     {
         $student = auth()->user();
@@ -88,7 +103,6 @@ class DashboardController extends Controller
 
         return view('room', compact('workspace'));
     }
-
 
     public function sendMessage(Request $request, Workspace $workspace)
     {
