@@ -14,42 +14,51 @@
 
         <style>
             :root {
-                --c-bg: #faf8f5;
+                --c-bg: #f8fafc;
                 --c-bg2: #ffffff;
                 --c-surface: #ffffff;
-                --c-border: #ede8df;
-                --c-text: #1c1917;
-                --c-text2: #78716c;
-                --c-text3: #a8a29e;
-                --c-accent: #f97316;
-                --c-accent2: #fb923c;
-                --c-accent-bg: #fff7ed;
+                --c-border: #e2e8f0;
+                --c-text: #0f172a;
+                --c-text2: #64748b;
+                --c-text3: #94a3b8;
+
+                --c-accent: #2563eb;
+                --c-accent2: #7c3aed;
+                --c-accent-bg: rgba(37, 99, 235, 0.10);
+
                 --c-purple: #7c3aed;
-                --c-purple-bg: #f5f3ff;
-                --c-green: #16a34a;
-                --c-green-bg: #f0fdf4;
-                --c-amber: #d97706;
-                --c-amber-bg: #fffbeb;
+                --c-purple-bg: rgba(124, 58, 237, 0.10);
+
+                --c-green: #22c55e;
+                --c-green-bg: rgba(34, 197, 94, 0.10);
+
+                --c-amber: #0891b2;
+                --c-amber-bg: rgba(8, 145, 178, 0.10);
+
                 --nav-h: 72px;
             }
 
             html.dark {
-                --c-bg: #131008;
-                --c-bg2: #1c1810;
-                --c-surface: #221e14;
-                --c-border: #2d2820;
-                --c-text: #faf8f5;
-                --c-text2: #a8a29e;
-                --c-text3: #57534e;
-                --c-accent: #fb923c;
-                --c-accent2: #f97316;
-                --c-accent-bg: #1c1008;
+                --c-bg: #020617;
+                --c-bg2: #0f172a;
+                --c-surface: #111827;
+                --c-border: #1e293b;
+                --c-text: #f8fafc;
+                --c-text2: #cbd5e1;
+                --c-text3: #64748b;
+
+                --c-accent: #60a5fa;
+                --c-accent2: #a78bfa;
+                --c-accent-bg: rgba(37, 99, 235, 0.16);
+
                 --c-purple: #a78bfa;
-                --c-purple-bg: #1e1a2e;
+                --c-purple-bg: rgba(124, 58, 237, 0.16);
+
                 --c-green: #4ade80;
-                --c-green-bg: #0d1f12;
-                --c-amber: #fbbf24;
-                --c-amber-bg: #1c1608;
+                --c-green-bg: rgba(34, 197, 94, 0.14);
+
+                --c-amber: #22d3ee;
+                --c-amber-bg: rgba(8, 145, 178, 0.16);
             }
 
             * {
@@ -84,13 +93,13 @@
             }
 
             html.dark .hero-bg-blob {
-                opacity: 0.14;
+                opacity: 0.18;
             }
 
             .blob1 {
                 width: 420px;
                 height: 420px;
-                background: #fdba74;
+                background: #60a5fa;
                 top: -120px;
                 right: -80px;
             }
@@ -98,7 +107,7 @@
             .blob2 {
                 width: 360px;
                 height: 360px;
-                background: #c4b5fd;
+                background: #a78bfa;
                 bottom: 40px;
                 left: -80px;
             }
@@ -106,7 +115,7 @@
             .blob3 {
                 width: 260px;
                 height: 260px;
-                background: #86efac;
+                background: #22d3ee;
                 bottom: 120px;
                 right: 180px;
             }
