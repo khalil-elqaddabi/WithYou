@@ -4,8 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'WithYou') }}</title>
+
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800&family=sora:400,600,700" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800&family=sora:400,600,700,800" rel="stylesheet" />
 
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -13,822 +14,1367 @@
 
     <style>
         :root {
-            --c-bg: #faf8f5;
-            --c-bg2: #ffffff;
-            --c-surface: #ffffff;
-            --c-border: #ede8df;
-            --c-text: #1c1917;
-            --c-text2: #78716c;
-            --c-text3: #a8a29e;
-            --c-accent: #f97316;
-            --c-accent2: #fb923c;
-            --c-accent-bg: #fff7ed;
-            --c-purple: #7c3aed;
-            --c-purple-bg: #f5f3ff;
-            --c-green: #16a34a;
-            --c-green-bg: #f0fdf4;
-            --c-amber: #d97706;
-            --c-amber-bg: #fffbeb;
-            --nav-h: 68px;
+            --nav-h: 72px;
+
+            --bg: #020617;
+            --bg-soft: #0f172a;
+            --surface: #0f172a;
+            --surface-2: #111827;
+            --border: #1e293b;
+
+            --text: #f8fafc;
+            --muted: #cbd5e1;
+            --muted-2: #64748b;
+
+            --blue: #2563eb;
+            --blue-soft: rgba(37, 99, 235, 0.12);
+
+            --violet: #7c3aed;
+            --violet-soft: rgba(124, 58, 237, 0.12);
+
+            --cyan: #0891b2;
+            --cyan-soft: rgba(8, 145, 178, 0.12);
+
+            --success: #22c55e;
+
+            --shadow-sm: 0 12px 30px rgba(0, 0, 0, 0.16);
+            --shadow-md: 0 18px 45px rgba(0, 0, 0, 0.22);
+            --shadow-lg: 0 24px 50px rgba(0, 0, 0, 0.28);
         }
-        html.dark {
-            --c-bg: #131008;
-            --c-bg2: #1c1810;
-            --c-surface: #221e14;
-            --c-border: #2d2820;
-            --c-text: #faf8f5;
-            --c-text2: #a8a29e;
-            --c-text3: #57534e;
-            --c-accent: #fb923c;
-            --c-accent2: #f97316;
-            --c-accent-bg: #1c1008;
-            --c-purple: #a78bfa;
-            --c-purple-bg: #1e1a2e;
-            --c-green: #4ade80;
-            --c-green-bg: #0d1f12;
-            --c-amber: #fbbf24;
-            --c-amber-bg: #1c1608;
+
+        html.light {
+            --bg: #f8fafc;
+            --bg-soft: #f1f5f9;
+            --surface: #ffffff;
+            --surface-2: #f8fafc;
+            --border: #e2e8f0;
+
+            --text: #0f172a;
+            --muted: #64748b;
+            --muted-2: #94a3b8;
+
+            --blue-soft: rgba(37, 99, 235, 0.10);
+            --violet-soft: rgba(124, 58, 237, 0.10);
+            --cyan-soft: rgba(8, 145, 178, 0.10);
+
+            --shadow-sm: 0 10px 28px rgba(15, 23, 42, 0.05);
+            --shadow-md: 0 16px 40px rgba(15, 23, 42, 0.06);
+            --shadow-lg: 0 22px 45px rgba(15, 23, 42, 0.10);
         }
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
         body {
-            background: var(--c-bg);
-            color: var(--c-text);
-            transition: background 0.3s, color 0.3s;
+            background: var(--bg);
+            color: var(--text);
             overflow-x: hidden;
+            transition: background .25s ease, color .25s ease;
         }
 
-        /* ── NAV ── */
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: calc(100% - 40px);
+            max-width: 1600px;
+            margin-inline: auto;
+        }
+
+        /* NAV */
         nav {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
             height: var(--nav-h);
-            background: var(--c-bg);
-            border-bottom: 1px solid var(--c-border);
-            display: flex; align-items: center;
-            padding: 0 clamp(1rem, 5vw, 4rem);
-            transition: background 0.3s, border-color 0.3s;
+            z-index: 100;
+            backdrop-filter: blur(14px);
+            background: rgba(2, 6, 23, 0.80);
+            border-bottom: 1px solid var(--border);
         }
-        .nav-logo {
-            display: flex; align-items: center; gap: 10px;
-            text-decoration: none;
+
+        html.light nav {
+            background: rgba(248, 250, 252, 0.86);
+        }
+
+        .nav-inner {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             font-family: 'Sora', sans-serif;
-            font-weight: 700; font-size: 1.2rem;
-            color: var(--c-text);
+            font-size: 1.08rem;
+            font-weight: 700;
         }
-        .nav-logo-icon {
-            width: 36px; height: 36px; border-radius: 10px;
-            background: var(--c-accent);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 16px; color: white; font-weight: 800;
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--blue), var(--violet));
+            color: white;
+            font-weight: 800;
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.28);
         }
-        .nav-links { margin-left: auto; display: flex; align-items: center; gap: 8px; }
-        .btn-ghost {
-            padding: 8px 18px; border-radius: 10px;
-            font-size: 0.875rem; font-weight: 500;
-            color: var(--c-text2);
-            text-decoration: none;
-            border: 1.5px solid transparent;
-            transition: all 0.2s;
-            cursor: pointer; background: transparent;
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .btn-ghost:hover { color: var(--c-text); border-color: var(--c-border); background: var(--c-surface); }
-        .btn-primary {
-            padding: 8px 20px; border-radius: 10px;
-            font-size: 0.875rem; font-weight: 600;
-            background: var(--c-accent); color: white;
-            text-decoration: none; border: none; cursor: pointer;
-            transition: all 0.2s;
+
+        .nav-link {
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: var(--muted);
+            font-size: .92rem;
+            font-weight: 600;
+            transition: .2s ease;
         }
-        .btn-primary:hover { background: var(--c-accent2); transform: translateY(-1px); }
+
+        .nav-link:hover {
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border-radius: 14px;
+            padding: 12px 18px;
+            font-size: .95rem;
+            font-weight: 700;
+            border: 1px solid transparent;
+            transition: .2s ease;
+            cursor: pointer;
+        }
+
         .btn-secondary {
-            padding: 8px 20px; border-radius: 10px;
-            font-size: 0.875rem; font-weight: 600;
-            background: transparent; color: var(--c-accent);
-            border: 1.5px solid var(--c-accent);
-            text-decoration: none; cursor: pointer;
-            transition: all 0.2s;
+            background: var(--surface);
+            color: var(--text);
+            border-color: var(--border);
         }
-        .btn-secondary:hover { background: var(--c-accent-bg); }
 
-        /* theme toggle */
-        .theme-toggle {
-            width: 38px; height: 38px; border-radius: 10px;
-            border: 1.5px solid var(--c-border);
-            background: var(--c-surface);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.2s;
-            color: var(--c-text2);
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            border-color: #93c5fd;
         }
-        .theme-toggle:hover { border-color: var(--c-accent); color: var(--c-accent); }
-        .icon-sun, .icon-moon { width: 16px; height: 16px; }
-        html.dark .icon-sun { display: block; }
-        html.dark .icon-moon { display: none; }
-        html:not(.dark) .icon-sun { display: none; }
-        html:not(.dark) .icon-moon { display: block; }
 
-        /* mobile menu */
+        .btn-primary {
+            color: white;
+            background: linear-gradient(135deg, var(--blue), var(--violet));
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.22);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 18px 35px rgba(37, 99, 235, 0.30);
+        }
+
+        .theme-toggle,
         .menu-toggle {
-            display: none; width: 38px; height: 38px; border-radius: 10px;
-            border: 1.5px solid var(--c-border); background: var(--c-surface);
-            align-items: center; justify-content: center;
-            cursor: pointer; color: var(--c-text2);
-        }
-        .mobile-menu {
-            display: none; position: fixed;
-            top: var(--nav-h); left: 0; right: 0;
-            background: var(--c-bg); border-bottom: 1px solid var(--c-border);
-            padding: 1rem clamp(1rem,5vw,4rem) 1.5rem;
-            flex-direction: column; gap: 8px; z-index: 99;
-        }
-        .mobile-menu.open { display: flex; }
-        .mobile-menu a, .mobile-menu button {
-            width: 100%; text-align: center; padding: 10px;
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--muted);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: .2s ease;
         }
 
-        /* ── HERO ── */
+        .theme-toggle:hover,
+        .menu-toggle:hover {
+            color: var(--text);
+            border-color: #93c5fd;
+        }
+
+        .menu-toggle,
+        .mobile-theme-toggle {
+            display: none;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: var(--nav-h);
+            left: 0;
+            right: 0;
+            z-index: 95;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        .mobile-menu.open {
+            display: block;
+        }
+
+        .mobile-menu-inner {
+            padding: 16px 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mobile-menu .btn,
+        .mobile-menu .nav-link {
+            width: 100%;
+        }
+
+        /* HERO */
         .hero {
-            min-height: 100vh;
-            padding-top: var(--nav-h);
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            padding-left: clamp(1rem,5vw,4rem);
-            padding-right: clamp(1rem,5vw,4rem);
-            position: relative; overflow: hidden;
-            text-align: center;
+            padding-top: calc(var(--nav-h) + 34px);
+            padding-bottom: 36px;
         }
-        .hero-bg-blob {
-            position: absolute; border-radius: 50%;
-            filter: blur(80px); opacity: 0.35; pointer-events: none;
+
+        .hero-shell {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 34px;
+            background: linear-gradient(145deg, var(--surface), var(--surface-2));
+            box-shadow: var(--shadow-md);
         }
-        html.dark .hero-bg-blob { opacity: 0.2; }
-        .blob1 { width: 500px; height: 500px; background: #fdba74; top: -100px; right: -100px; }
-        .blob2 { width: 400px; height: 400px; background: #c4b5fd; bottom: 50px; left: -100px; }
-        .blob3 { width: 300px; height: 300px; background: #86efac; bottom: 100px; right: 200px; }
+
+        .hero-orb {
+            position: absolute;
+            border-radius: 999px;
+            pointer-events: none;
+        }
+
+        .hero-orb.one {
+            width: 240px;
+            height: 240px;
+            top: -60px;
+            right: -40px;
+            background: var(--violet-soft);
+            filter: blur(4px);
+        }
+
+        .hero-orb.two {
+            width: 180px;
+            height: 180px;
+            bottom: -50px;
+            left: -40px;
+            background: var(--blue-soft);
+            filter: blur(4px);
+        }
+
+        .hero-grid {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            gap: 28px;
+            align-items: center;
+        }
+
         .hero-badge {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 6px 14px; border-radius: 99px;
-            background: var(--c-accent-bg);
-            border: 1px solid #fed7aa;
-            font-size: 0.8rem; font-weight: 600; color: var(--c-accent);
-            margin-bottom: 1.5rem;
-            animation: fadeUp 0.6s ease both;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+            border-radius: 999px;
+            padding: 9px 15px;
+            font-size: .78rem;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: #93c5fd;
+            background: rgba(37,99,235,.14);
+            border: 1px solid rgba(59,130,246,.25);
         }
-        html.dark .hero-badge { border-color: #7c2d12; }
-        .hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c-accent); }
+
+        .hero-badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--blue);
+        }
+
         .hero-title {
             font-family: 'Sora', sans-serif;
-            font-size: clamp(2.2rem, 5.5vw, 4rem);
-            font-weight: 700; line-height: 1.15;
-            color: var(--c-text);
-            max-width: 720px;
-            margin: 0 auto 1.25rem;
-            animation: fadeUp 0.6s 0.1s ease both;
+            font-size: clamp(2.4rem, 5vw, 4.4rem);
+            line-height: 1.08;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 18px;
+            max-width: 680px;
         }
-        .hero-title .accent { color: var(--c-accent); }
+
+        .hero-title .accent {
+            background: linear-gradient(135deg, var(--blue), var(--violet));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
         .hero-subtitle {
-            font-size: clamp(1rem, 2vw, 1.15rem);
-            color: var(--c-text2); max-width: 520px;
-            margin: 0 auto 2.5rem; line-height: 1.7;
-            animation: fadeUp 0.6s 0.2s ease both;
+            max-width: 680px;
+            font-size: 1rem;
+            line-height: 1.9;
+            color: var(--muted);
+            margin-bottom: 26px;
         }
+
+        .hero-points {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .hero-point {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: .96rem;
+            font-weight: 600;
+        }
+
+        .hero-point-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 13px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            box-shadow: var(--shadow-sm);
+        }
+
         .hero-actions {
-            display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
-            animation: fadeUp 0.6s 0.3s ease both;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
         }
-        .btn-hero-primary {
-            padding: 14px 32px; border-radius: 12px;
-            font-size: 1rem; font-weight: 700;
-            background: var(--c-accent); color: white;
-            text-decoration: none; border: none; cursor: pointer;
-            transition: all 0.2s; box-shadow: 0 4px 20px #f9731640;
-        }
-        .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px #f9731660; }
-        .btn-hero-secondary {
-            padding: 14px 32px; border-radius: 12px;
-            font-size: 1rem; font-weight: 600;
-            background: var(--c-surface); color: var(--c-text);
-            text-decoration: none; border: 1.5px solid var(--c-border);
-            cursor: pointer; transition: all 0.2s;
-        }
-        .btn-hero-secondary:hover { border-color: var(--c-accent); color: var(--c-accent); transform: translateY(-2px); }
-        .hero-image {
-            margin-top: 4rem; width: 100%; max-width: 900px;
-            border-radius: 20px; overflow: hidden;
-            border: 1px solid var(--c-border);
-            box-shadow: 0 24px 80px rgba(0,0,0,0.12);
-            animation: fadeUp 0.8s 0.4s ease both;
+
+        /* PREVIEW */
+        .preview-wrap {
             position: relative;
         }
-        html.dark .hero-image { box-shadow: 0 24px 80px rgba(0,0,0,0.5); }
-        .hero-image-inner {
-            background: var(--c-surface);
-            height: 420px;
-            display: flex; align-items: center; justify-content: center;
-            position: relative; overflow: hidden;
-        }
-        .hero-mockup {
-            width: 100%; height: 100%;
-            display: grid; grid-template-columns: 220px 1fr;
-        }
-        .mockup-sidebar {
-            background: var(--c-bg);
-            border-right: 1px solid var(--c-border);
-            padding: 20px 14px;
-            display: flex; flex-direction: column; gap: 6px;
-        }
-        .mockup-logo-row {
-            display: flex; align-items: center; gap: 8px;
-            padding: 8px; margin-bottom: 12px;
-        }
-        .mockup-logo-sq {
-            width: 24px; height: 24px; border-radius: 6px;
-            background: var(--c-accent);
-        }
-        .mockup-logo-txt {
-            font-weight: 700; font-size: 12px; color: var(--c-text);
-        }
-        .mockup-nav-item {
-            padding: 7px 10px; border-radius: 8px;
-            font-size: 11px; color: var(--c-text2);
-            display: flex; align-items: center; gap: 8px;
-        }
-        .mockup-nav-item.active {
-            background: var(--c-accent-bg); color: var(--c-accent); font-weight: 600;
-        }
-        .mockup-nav-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-        .mockup-content { padding: 20px; display: flex; flex-direction: column; gap: 14px; background: var(--c-bg2); }
-        .mockup-title { font-size: 13px; font-weight: 700; color: var(--c-text); }
-        .mockup-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .mockup-card {
-            background: var(--c-surface); border: 1px solid var(--c-border);
-            border-radius: 10px; padding: 12px;
-        }
-        .mockup-card-strip { height: 3px; border-radius: 2px; margin-bottom: 8px; }
-        .mockup-card-name { font-size: 10px; font-weight: 600; color: var(--c-text); margin-bottom: 3px; }
-        .mockup-card-meta { font-size: 9px; color: var(--c-text3); margin-bottom: 6px; }
-        .mockup-bar { height: 2px; background: var(--c-border); border-radius: 1px; }
-        .mockup-bar-fill { height: 100%; border-radius: 1px; }
-        .mockup-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .mockup-panel {
-            background: var(--c-surface); border: 1px solid var(--c-border);
-            border-radius: 10px; padding: 12px;
-        }
-        .mockup-panel-title { font-size: 9px; font-weight: 700; color: var(--c-text3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-        .mockup-row { display: flex; align-items: center; gap: 6px; padding: 4px 0; border-bottom: 1px solid var(--c-border); }
-        .mockup-row:last-child { border-bottom: none; }
-        .mockup-av { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 7px; color: white; font-weight: 700; flex-shrink: 0; }
-        .mockup-row-text { font-size: 9px; color: var(--c-text2); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .mockup-live { width: 5px; height: 5px; border-radius: 50%; background: #22c55e; flex-shrink: 0; }
 
-        /* ── STATS ── */
-        .stats {
-            padding: 4rem clamp(1rem,5vw,4rem);
-            background: var(--c-surface);
-            border-top: 1px solid var(--c-border);
-            border-bottom: 1px solid var(--c-border);
+        .floating-card {
+            position: absolute;
+            z-index: 5;
+            border: 1px solid var(--border);
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            padding: 12px 14px;
+            box-shadow: var(--shadow-sm);
         }
-        .stats-label { text-align: center; font-size: 0.8rem; font-weight: 700; color: var(--c-text3); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 2.5rem; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 2rem; max-width: 900px; margin: 0 auto; text-align: center; }
-        .stat-num { font-family: 'Sora', sans-serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; color: var(--c-accent); margin-bottom: 6px; }
-        .stat-desc { font-size: 0.875rem; color: var(--c-text2); font-weight: 500; }
 
-        /* ── HOW IT WORKS ── */
-        section { padding: 5rem clamp(1rem,5vw,4rem); }
-        .section-tag {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 5px 14px; border-radius: 99px;
-            font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
-            margin-bottom: 1rem;
+        html.light .floating-card {
+            background: rgba(255,255,255,.92);
         }
-        .tag-orange { background: var(--c-accent-bg); color: var(--c-accent); border: 1px solid #fed7aa; }
-        .tag-purple { background: var(--c-purple-bg); color: var(--c-purple); border: 1px solid #ddd6fe; }
-        html.dark .tag-orange { border-color: #7c2d12; }
-        html.dark .tag-purple { border-color: #3730a3; }
+
+        .floating-top {
+            top: -14px;
+            right: 18px;
+            min-width: 170px;
+        }
+
+        .floating-bottom {
+            bottom: 18px;
+            left: -10px;
+            min-width: 190px;
+        }
+
+        .floating-title {
+            font-size: .78rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .floating-sub {
+            font-size: .76rem;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .app-preview {
+            overflow: hidden;
+            border-radius: 26px;
+            border: 1px solid var(--border);
+            background: linear-gradient(180deg, var(--surface), var(--surface-2));
+            box-shadow: var(--shadow-lg);
+        }
+
+        .preview-topbar {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface);
+        }
+
+        .preview-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: var(--muted-2);
+            opacity: .6;
+        }
+
+        .preview-body {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            min-height: 430px;
+        }
+
+        .preview-sidebar {
+            border-right: 1px solid var(--border);
+            background: var(--bg-soft);
+            padding: 18px 14px;
+        }
+
+        .preview-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            padding: 8px;
+        }
+
+        .preview-brand-mark {
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--blue), var(--violet));
+        }
+
+        .preview-brand-text {
+            font-weight: 800;
+            font-size: .88rem;
+        }
+
+        .preview-nav {
+            display: grid;
+            gap: 8px;
+        }
+
+        .preview-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            font-size: .82rem;
+            font-weight: 700;
+            color: var(--muted);
+        }
+
+        .preview-nav-item.active {
+            color: #93c5fd;
+            background: rgba(37,99,235,.12);
+            border: 1px solid rgba(59,130,246,.18);
+        }
+
+        .preview-nav-icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: currentColor;
+        }
+
+        .preview-content {
+            padding: 18px;
+            display: grid;
+            gap: 14px;
+            background: var(--surface-2);
+        }
+
+        .preview-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .preview-title {
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .preview-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 999px;
+            padding: 8px 12px;
+            background: var(--violet-soft);
+            color: #c4b5fd;
+            font-size: .74rem;
+            font-weight: 800;
+        }
+
+        .stats-mini {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .mini-card {
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: 18px;
+            padding: 14px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .mini-label {
+            font-size: .72rem;
+            color: var(--muted-2);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            margin-bottom: 8px;
+        }
+
+        .mini-num {
+            font-size: 1.7rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .mini-num.blue { color: #60a5fa; }
+        .mini-num.violet { color: #a78bfa; }
+        .mini-num.cyan { color: #22d3ee; }
+
+        .workspace-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .workspace-card {
+            overflow: hidden;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .workspace-banner {
+            min-height: 74px;
+            padding: 14px;
+            display: flex;
+            align-items: end;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 800;
+            position: relative;
+        }
+
+        .workspace-banner.blue {
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+        }
+
+        .workspace-banner.violet {
+            background: linear-gradient(135deg, #7c3aed, #c026d3);
+        }
+
+        .workspace-banner::after {
+            content: "";
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.10);
+            top: -18px;
+            right: -18px;
+        }
+
+        .workspace-body {
+            padding: 14px;
+        }
+
+        .workspace-name {
+            font-size: .92rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .workspace-meta {
+            font-size: .8rem;
+            color: var(--muted);
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .workspace-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 999px;
+            padding: 7px 10px;
+            background: var(--bg-soft);
+            border: 1px solid var(--border);
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--muted);
+        }
+
+        .workspace-tag span {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--success);
+        }
+
+        /* COMMON SECTIONS */
+        .section {
+            padding: 0 0 34px;
+        }
+
+        .section-card {
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            background: linear-gradient(180deg, var(--surface), var(--surface-2));
+            box-shadow: var(--shadow-md);
+            padding: 28px;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .section-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: .78rem;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: #818cf8;
+        }
+
+        .section-kicker .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--blue);
+        }
+
         .section-title {
             font-family: 'Sora', sans-serif;
-            font-size: clamp(1.6rem, 3vw, 2.2rem);
-            font-weight: 700; line-height: 1.25;
-            color: var(--c-text); margin-bottom: 1rem;
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            line-height: 1.2;
+            font-weight: 800;
+            margin-bottom: 10px;
         }
-        .section-sub { font-size: 1rem; color: var(--c-text2); max-width: 520px; line-height: 1.7; }
-        .hiw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
-        .hiw-card {
-            background: var(--c-surface);
-            border: 1px solid var(--c-border);
-            border-radius: 16px; padding: 1.75rem;
-            transition: all 0.25s; position: relative;
-        }
-        .hiw-card:hover { transform: translateY(-4px); border-color: var(--c-accent); box-shadow: 0 12px 40px rgba(249,115,22,0.12); }
-        .hiw-num {
-            width: 40px; height: 40px; border-radius: 12px;
-            background: var(--c-accent-bg);
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'Sora', sans-serif; font-size: 1rem; font-weight: 800;
-            color: var(--c-accent); margin-bottom: 1.25rem;
-            border: 1.5px solid #fed7aa;
-        }
-        html.dark .hiw-num { border-color: #7c2d12; }
-        .hiw-title { font-size: 1rem; font-weight: 700; color: var(--c-text); margin-bottom: 8px; }
-        .hiw-desc { font-size: 0.875rem; color: var(--c-text2); line-height: 1.6; }
 
-        /* ── FEATURES ── */
-        .features-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-        @media (max-width: 768px) { .features-inner { grid-template-columns: 1fr; } }
-        .features-visual {
-            background: var(--c-surface);
-            border: 1px solid var(--c-border);
-            border-radius: 20px; overflow: hidden;
-            aspect-ratio: 1 / 0.85;
+        .section-subtitle {
+            max-width: 650px;
+            color: var(--muted);
+            font-size: .98rem;
+            line-height: 1.8;
+        }
+
+        .feature-grid,
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .feature-card,
+        .step-card {
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: 22px;
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: .2s ease;
+        }
+
+        .feature-card:hover,
+        .step-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: #334155;
+        }
+
+        .feature-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .feature-icon.blue { background: var(--blue-soft); color: #60a5fa; }
+        .feature-icon.violet { background: var(--violet-soft); color: #a78bfa; }
+        .feature-icon.cyan { background: var(--cyan-soft); color: #22d3ee; }
+
+        .feature-title,
+        .step-title {
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .feature-desc,
+        .step-desc {
+            color: var(--muted);
+            font-size: .92rem;
+            line-height: 1.75;
+        }
+
+        .step-num {
+            width: 46px;
+            height: 46px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-family: 'Sora', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            background: rgba(37,99,235,.12);
+            border: 1px solid rgba(59,130,246,.18);
+            color: #93c5fd;
+        }
+
+        /* CTA */
+        .cta {
+            padding: 0 0 44px;
+        }
+
+        .cta-box {
             position: relative;
+            overflow: hidden;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            background: linear-gradient(135deg, rgba(37,99,235,.08), rgba(124,58,237,.08), rgba(8,145,178,.08));
+            box-shadow: var(--shadow-md);
+            padding: 30px;
         }
-        .features-visual-inner { padding: 1.5rem; height: 100%; display: flex; flex-direction: column; gap: 12px; }
-        .feat-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--c-bg); border-radius: 12px; border: 1px solid var(--c-border); }
-        .feat-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .feat-name { font-size: 0.875rem; font-weight: 600; color: var(--c-text); }
-        .feat-sub { font-size: 0.75rem; color: var(--c-text3); }
-        .feat-badge { margin-left: auto; padding: 3px 10px; border-radius: 99px; font-size: 0.7rem; font-weight: 700; }
-        .badge-green { background: var(--c-green-bg); color: var(--c-green); }
-        .badge-orange { background: var(--c-accent-bg); color: var(--c-accent); }
-        .badge-purple { background: var(--c-purple-bg); color: var(--c-purple); }
-        .features-list { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem; }
-        .feature-item { display: flex; gap: 14px; align-items: flex-start; }
-        .feature-check {
-            width: 32px; height: 32px; border-radius: 10px;
-            background: var(--c-green-bg); border: 1px solid #bbf7d0;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
-        }
-        html.dark .feature-check { border-color: #14532d; }
-        .feature-check svg { width: 14px; height: 14px; color: var(--c-green); }
-        .feature-text { font-size: 0.9375rem; color: var(--c-text); font-weight: 500; }
-        .feature-sub { font-size: 0.8125rem; color: var(--c-text2); margin-top: 2px; }
 
-        /* ── SUPPORT / CTA ── */
-        .support { background: var(--c-surface); border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); }
-        .support-inner { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: center; max-width: 1100px; margin: 0 auto; }
-        @media (max-width: 900px) { .support-inner { grid-template-columns: 1fr; } }
-        .support-visual { display: flex; flex-direction: column; gap: 14px; }
-        .support-card {
-            background: var(--c-bg); border: 1px solid var(--c-border);
-            border-radius: 16px; padding: 1.25rem 1.5rem;
-            display: flex; align-items: center; gap: 14px;
-            transition: all 0.2s;
+        .cta-box::before {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 999px;
+            background: rgba(124,58,237,.10);
+            right: -50px;
+            top: -50px;
         }
-        .support-card:hover { border-color: var(--c-accent); transform: translateX(6px); }
-        .support-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .support-card-title { font-size: 0.9375rem; font-weight: 700; color: var(--c-text); margin-bottom: 2px; }
-        .support-card-sub { font-size: 0.8125rem; color: var(--c-text2); }
-        .form-grid { display: flex; flex-direction: column; gap: 12px; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
-        .form-field label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--c-text2); margin-bottom: 5px; }
-        .form-field input, .form-field textarea, .form-field select {
-            width: 100%; padding: 10px 14px;
-            background: var(--c-bg); border: 1.5px solid var(--c-border);
-            border-radius: 10px; font-size: 0.875rem; color: var(--c-text);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            transition: border-color 0.2s;
-            outline: none;
-        }
-        .form-field input:focus, .form-field textarea:focus {
-            border-color: var(--c-accent);
-        }
-        .form-field textarea { min-height: 100px; resize: vertical; }
-        .btn-submit {
-            width: 100%; padding: 13px; border-radius: 12px;
-            font-size: 1rem; font-weight: 700;
-            background: var(--c-accent); color: white;
-            border: none; cursor: pointer;
-            transition: all 0.2s; box-shadow: 0 4px 20px #f9731640;
-        }
-        .btn-submit:hover { background: var(--c-accent2); transform: translateY(-1px); }
 
-        /* ── FOOTER ── */
+        .cta-inner {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .cta-title {
+            font-family: 'Sora', sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .cta-sub {
+            color: var(--muted);
+            line-height: 1.8;
+            max-width: 700px;
+        }
+
+        /* FOOTER */
         footer {
-            padding: 3rem clamp(1rem,5vw,4rem) 2rem;
-            display: flex; flex-wrap: wrap; gap: 1.5rem;
-            align-items: center; justify-content: space-between;
-            border-top: 1px solid var(--c-border);
+            padding: 0 0 34px;
         }
-        .footer-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-        .footer-logo-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--c-accent); display: flex; align-items: center; justify-content: center; font-size: 14px; color: white; font-weight: 800; }
-        .footer-logo-txt { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1rem; color: var(--c-text); }
-        .footer-copy { font-size: 0.8125rem; color: var(--c-text3); }
-        .footer-links { display: flex; gap: 20px; }
-        .footer-links a { font-size: 0.8125rem; color: var(--c-text2); text-decoration: none; transition: color 0.2s; }
-        .footer-links a:hover { color: var(--c-accent); }
 
-        /* ── ANIMATIONS ── */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to   { opacity: 1; transform: translateY(0); }
+        .footer-card {
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background: linear-gradient(180deg, var(--surface), var(--surface-2));
+            box-shadow: var(--shadow-sm);
+            padding: 20px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
         }
-        .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
-        .reveal.visible { opacity: 1; transform: none; }
 
-        /* ── RESPONSIVE ── */
-        @media (max-width: 640px) {
-            .nav-links .btn-ghost { display: none; }
-            .menu-toggle { display: flex; }
-            .desktop-auth { display: none; }
-            .hero-image-inner { height: 260px; }
-            .mockup-sidebar { display: none; }
-            .mockup-cards { grid-template-columns: 1fr 1fr; }
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-copy {
+            color: var(--muted);
+            font-size: .9rem;
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--muted);
+            font-weight: 600;
+            font-size: .9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--text);
+        }
+
+        /* REVEAL */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .6s ease, transform .6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1100px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-grid,
+            .steps-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .preview-body {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-sidebar {
+                display: none;
+            }
+
+            .workspace-grid,
+            .stats-mini {
+                grid-template-columns: 1fr;
+            }
+
+            .floating-top,
+            .floating-bottom {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .menu-toggle,
+            .mobile-theme-toggle {
+                display: inline-flex;
+            }
+
+            .hero-shell,
+            .section-card,
+            .cta-box {
+                padding: 22px;
+            }
+
+            .feature-grid,
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding-top: calc(var(--nav-h) + 22px);
+            }
+
+            .container {
+                width: calc(100% - 24px);
+            }
         }
     </style>
 </head>
 <body>
+    <nav>
+        <div class="container nav-inner">
+            <a href="/" class="brand">
+                <div class="brand-mark">W</div>
+                <span>WithYou</span>
+            </a>
 
-{{-- ── NAV ── --}}
-<nav>
-    <a href="/" class="nav-logo">
-        <div class="nav-logo-icon">Y</div>
-        WithYou
-    </a>
-    <div class="nav-links desktop-auth">
-        @if (Route::has('login'))
-            @auth
-                <a href="{{ url('/dashboard') }}" class="btn-ghost">Dashboard</a>
-            @else
-                <a href="{{ route('login') }}" class="btn-ghost">Log in</a>
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="btn-primary">Get started</a>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#how-it-works" class="nav-link">How it works</a>
+
+                @if (Route::has('login'))
+                    @auth
+                        <a href="{{ url('/dashboard') }}" class="btn btn-secondary">Dashboard</a>
+                    @else
+                        <a href="{{ route('login') }}" class="btn btn-secondary">Sign in</a>
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}" class="btn btn-primary">Get started</a>
+                        @endif
+                    @endauth
                 @endif
-            @endauth
-        @endif
-    </div>
-    <button class="theme-toggle" onclick="toggleTheme()" style="margin-left: auto;" aria-label="Toggle theme">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-    </button>
-    <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu" style="margin-left: 8px;">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <line x1="2" y1="5" x2="16" y2="5"/><line x1="2" y1="9" x2="16" y2="9"/><line x1="2" y1="13" x2="16" y2="13"/>
-        </svg>
-    </button>
-</nav>
 
-{{-- Mobile menu --}}
-<div class="mobile-menu" id="mobileMenu">
-    @if (Route::has('login'))
-        @auth
-            <a href="{{ url('/dashboard') }}" class="btn-ghost">Dashboard</a>
-        @else
-            <a href="{{ route('login') }}" class="btn-ghost">Log in</a>
-            @if (Route::has('register'))
-                <a href="{{ route('register') }}" class="btn-primary">Get started free</a>
+                <button class="theme-toggle desktop-theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:8px;">
+                <button class="theme-toggle mobile-theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme mobile">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+
+                <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <line x1="2" y1="5" x2="16" y2="5" />
+                        <line x1="2" y1="9" x2="16" y2="9" />
+                        <line x1="2" y1="13" x2="16" y2="13" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="container mobile-menu-inner">
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#how-it-works" class="nav-link">How it works</a>
+
+            @if (Route::has('login'))
+                @auth
+                    <a href="{{ url('/dashboard') }}" class="btn btn-secondary">Dashboard</a>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-secondary">Sign in</a>
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="btn btn-primary">Get started</a>
+                    @endif
+                @endauth
             @endif
-        @endauth
-    @endif
-</div>
-
-{{-- ── HERO ── --}}
-<section class="hero" id="home">
-    <div class="hero-bg-blob blob1"></div>
-    <div class="hero-bg-blob blob2"></div>
-    <div class="hero-bg-blob blob3"></div>
-
-    <div class="hero-badge">
-        <div class="hero-badge-dot"></div>
-        The #1 platform for motivated learners
-    </div>
-    <h1 class="hero-title">
-        Take your student experience<br>to the <span class="accent">next level</span>
-    </h1>
-    <p class="hero-subtitle">
-        Courses, exercises, workspaces, live rooms and video calls — everything you need to learn, grow, and succeed, all in one place.
-    </p>
-    <div class="hero-actions">
-        @if (Route::has('register'))
-            <a href="{{ route('register') }}" class="btn-hero-primary">Start for free →</a>
-        @endif
-        <a href="#how-it-works" class="btn-hero-secondary">How it works</a>
+        </div>
     </div>
 
-    {{-- App preview mockup --}}
-    <div class="hero-image">
-        <div class="hero-image-inner">
-            <div class="hero-mockup">
-                <div class="mockup-sidebar">
-                    <div class="mockup-logo-row">
-                        <div class="mockup-logo-sq"></div>
-                        <span class="mockup-logo-txt">WithYou</span>
-                    </div>
-                    <div class="mockup-nav-item active"><div class="mockup-nav-dot"></div> Courses</div>
-                    <div class="mockup-nav-item"><div class="mockup-nav-dot"></div> Exercises</div>
-                    <div class="mockup-nav-item"><div class="mockup-nav-dot"></div> Rooms</div>
-                    <div class="mockup-nav-item"><div class="mockup-nav-dot"></div> Chat</div>
-                    <div class="mockup-nav-item"><div class="mockup-nav-dot"></div> Video Call</div>
-                </div>
-                <div class="mockup-content">
-                    <div class="mockup-title">My courses</div>
-                    <div class="mockup-cards">
-                        <div class="mockup-card">
-                            <div class="mockup-card-strip" style="background:#f97316"></div>
-                            <div class="mockup-card-name">Design Thinking</div>
-                            <div class="mockup-card-meta">14 lessons</div>
-                            <div class="mockup-bar"><div class="mockup-bar-fill" style="width:68%;background:#f97316"></div></div>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-shell reveal">
+                    <div class="hero-orb one"></div>
+                    <div class="hero-orb two"></div>
+
+                    <div class="hero-grid">
+                        <div>
+                            <div class="hero-badge">
+                                <span class="hero-badge-dot"></span>
+                                Learning platform for students & teachers
+                            </div>
+
+                            <h1 class="hero-title">
+                                Learn, collaborate, and grow with
+                                <span class="accent">WithYou</span>
+                            </h1>
+
+                            <p class="hero-subtitle">
+                                One clean workspace for courses, lessons, exercises, chat rooms, and live collaboration.
+                                Built for focused learning with the same modern feel as your dashboard.
+                            </p>
+
+                            <div class="hero-points">
+                                <div class="hero-point">
+                                    <div class="hero-point-icon">
+                                        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" style="color:#60a5fa;">
+                                            <rect x="2" y="2" width="7" height="7" rx="2"></rect>
+                                            <rect x="11" y="2" width="7" height="7" rx="2"></rect>
+                                            <rect x="2" y="11" width="7" height="7" rx="2"></rect>
+                                            <rect x="11" y="11" width="7" height="7" rx="2"></rect>
+                                        </svg>
+                                    </div>
+                                    Organized workspaces for every course
+                                </div>
+
+                                <div class="hero-point">
+                                    <div class="hero-point-icon">
+                                        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" style="color:#a78bfa;">
+                                            <path d="M3 5h14M3 9h10M3 13h12" stroke-linecap="round"></path>
+                                        </svg>
+                                    </div>
+                                    Lessons and exercises in one place
+                                </div>
+
+                                <div class="hero-point">
+                                    <div class="hero-point-icon">
+                                        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" style="color:#22d3ee;">
+                                            <rect x="1.5" y="5" width="11" height="8" rx="2"></rect>
+                                            <path d="M12.5 8l5-3v8l-5-3" stroke-linejoin="round"></path>
+                                        </svg>
+                                    </div>
+                                    Real-time rooms and video collaboration
+                                </div>
+                            </div>
+
+                            <div class="hero-actions">
+                                @if (Route::has('register'))
+                                    <a href="{{ route('register') }}" class="btn btn-primary">Get started</a>
+                                @endif
+                                <a href="#features" class="btn btn-secondary">Explore features</a>
+                            </div>
                         </div>
-                        <div class="mockup-card">
-                            <div class="mockup-card-strip" style="background:#7c3aed"></div>
-                            <div class="mockup-card-name">Public Speaking</div>
-                            <div class="mockup-card-meta">22 lessons</div>
-                            <div class="mockup-bar"><div class="mockup-bar-fill" style="width:40%;background:#7c3aed"></div></div>
-                        </div>
-                        <div class="mockup-card">
-                            <div class="mockup-card-strip" style="background:#16a34a"></div>
-                            <div class="mockup-card-name">Data Analysis</div>
-                            <div class="mockup-card-meta">10 lessons</div>
-                            <div class="mockup-bar"><div class="mockup-bar-fill" style="width:90%;background:#16a34a"></div></div>
-                        </div>
-                    </div>
-                    <div class="mockup-bottom">
-                        <div class="mockup-panel">
-                            <div class="mockup-panel-title">Active Rooms</div>
-                            <div class="mockup-row"><div class="mockup-av" style="background:#f97316">YA</div><div class="mockup-row-text">Project standup</div><div class="mockup-live"></div></div>
-                            <div class="mockup-row"><div class="mockup-av" style="background:#7c3aed">SR</div><div class="mockup-row-text">Fil rouge team</div><div class="mockup-live"></div></div>
-                        </div>
-                        <div class="mockup-panel">
-                            <div class="mockup-panel-title">Messages</div>
-                            <div class="mockup-row"><div class="mockup-av" style="background:#16a34a">KM</div><div class="mockup-row-text">great session today ✓</div></div>
-                            <div class="mockup-row"><div class="mockup-av" style="background:#d97706">MB</div><div class="mockup-row-text">joining standup</div></div>
+
+                        <div class="preview-wrap">
+                            <div class="floating-card floating-top">
+                                <div class="floating-title">Student workspace</div>
+                                <div class="floating-sub">Courses, lessons, chat and progress overview in one clean panel.</div>
+                            </div>
+
+                            <div class="floating-card floating-bottom">
+                                <div class="floating-title">Live collaboration</div>
+                                <div class="floating-sub">Join rooms, continue discussions, and stay connected with your class.</div>
+                            </div>
+
+                            <div class="app-preview">
+                                <div class="preview-topbar">
+                                    <span class="preview-dot"></span>
+                                    <span class="preview-dot"></span>
+                                    <span class="preview-dot"></span>
+                                </div>
+
+                                <div class="preview-body">
+                                    <div class="preview-sidebar">
+                                        <div class="preview-brand">
+                                            <div class="preview-brand-mark"></div>
+                                            <div class="preview-brand-text">WithYou</div>
+                                        </div>
+
+                                        <div class="preview-nav">
+                                            <div class="preview-nav-item active">
+                                                <span class="preview-nav-icon"></span>
+                                                Dashboard
+                                            </div>
+                                            <div class="preview-nav-item">
+                                                <span class="preview-nav-icon"></span>
+                                                Workspaces
+                                            </div>
+                                            <div class="preview-nav-item">
+                                                <span class="preview-nav-icon"></span>
+                                                Lessons
+                                            </div>
+                                            <div class="preview-nav-item">
+                                                <span class="preview-nav-icon"></span>
+                                                Exercises
+                                            </div>
+                                            <div class="preview-nav-item">
+                                                <span class="preview-nav-icon"></span>
+                                                Rooms
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="preview-content">
+                                        <div class="preview-head">
+                                            <div class="preview-title">Learning overview</div>
+                                            <div class="preview-chip">Student panel</div>
+                                        </div>
+
+                                        <div class="stats-mini">
+                                            <div class="mini-card">
+                                                <div class="mini-label">Workspaces</div>
+                                                <div class="mini-num blue">08</div>
+                                            </div>
+                                            <div class="mini-card">
+                                                <div class="mini-label">Lessons</div>
+                                                <div class="mini-num violet">24</div>
+                                            </div>
+                                            <div class="mini-card">
+                                                <div class="mini-label">Exercises</div>
+                                                <div class="mini-num cyan">13</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="workspace-grid">
+                                            <div class="workspace-card">
+                                                <div class="workspace-banner blue">WD</div>
+                                                <div class="workspace-body">
+                                                    <div class="workspace-name">Web Development</div>
+                                                    <div class="workspace-meta">Frontend fundamentals and Laravel basics</div>
+                                                    <div class="workspace-tag"><span></span> Teacher: Amal</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="workspace-card">
+                                                <div class="workspace-banner violet">UI</div>
+                                                <div class="workspace-body">
+                                                    <div class="workspace-name">UI Design</div>
+                                                    <div class="workspace-meta">Layouts, spacing, cards, and clean design systems</div>
+                                                    <div class="workspace-tag"><span></span> Teacher: Salma</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
+        </section>
 
-{{-- ── STATS ── --}}
-<div class="stats reveal">
-    <div class="stats-label">Trusted by learners worldwide</div>
-    <div class="stats-grid">
-        <div class="stat">
-            <div class="stat-num">15K+</div>
-            <div class="stat-desc">Active students</div>
-        </div>
-        <div class="stat">
-            <div class="stat-num">75%</div>
-            <div class="stat-desc">Job placement rate</div>
-        </div>
-        <div class="stat">
-            <div class="stat-num">35+</div>
-            <div class="stat-desc">Expert courses</div>
-        </div>
-        <div class="stat">
-            <div class="stat-num">25+</div>
-            <div class="stat-desc">Live rooms daily</div>
-        </div>
-        <div class="stat">
-            <div class="stat-num">15+</div>
-            <div class="stat-desc">Partner companies</div>
-        </div>
-    </div>
-</div>
-
-{{-- ── HOW IT WORKS ── --}}
-<section id="how-it-works" style="background: var(--c-bg); text-align: center;">
-    <div class="section-tag tag-orange reveal" style="margin: 0 auto 1rem;">How it works</div>
-    <h2 class="section-title reveal" style="max-width: 500px; margin: 0 auto 1rem;">Four steps to level up your skills</h2>
-    <p class="section-sub reveal" style="margin: 0 auto;">From signup to getting hired — our structured path makes every step clear and achievable.</p>
-    <div class="hiw-grid reveal">
-        <div class="hiw-card">
-            <div class="hiw-num">01</div>
-            <div class="hiw-title">Sign Up</div>
-            <div class="hiw-desc">Create your free account in seconds. No credit card needed, no friction — just pure learning from day one.</div>
-        </div>
-        <div class="hiw-card">
-            <div class="hiw-num">02</div>
-            <div class="hiw-title">Get access</div>
-            <div class="hiw-desc">Browse curated courses, join workspaces, and pick the learning path that matches your goals and current level.</div>
-        </div>
-        <div class="hiw-card">
-            <div class="hiw-num">03</div>
-            <div class="hiw-title">Practice exercises</div>
-            <div class="hiw-desc">Apply what you learn with real exercises and quizzes. Get instant feedback and track your progress step by step.</div>
-        </div>
-        <div class="hiw-card">
-            <div class="hiw-num">04</div>
-            <div class="hiw-title">Get results</div>
-            <div class="hiw-desc">Land your first job or freelance gig. Our partner network connects top learners to real opportunities.</div>
-        </div>
-    </div>
-</section>
-
-{{-- ── FEATURES ── --}}
-<section style="background: var(--c-surface); border-top: 1px solid var(--c-border);">
-    <div class="features-inner" style="max-width: 1100px; margin: 0 auto;">
-        <div>
-            <div class="section-tag tag-purple reveal">Everything you need</div>
-            <h2 class="section-title reveal">All your learning tools, in one place</h2>
-            <p class="section-sub reveal">No more switching between apps. WithYou brings courses, exercises, collaboration rooms, and video calls under one roof.</p>
-            <div class="features-list reveal">
-                <div class="feature-item">
-                    <div class="feature-check">
-                        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 7 5.5 10.5 12 4"/></svg>
-                    </div>
-                    <div>
-                        <div class="feature-text">Structured courses & lessons</div>
-                        <div class="feature-sub">Built by industry experts, updated regularly</div>
-                    </div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-check">
-                        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 7 5.5 10.5 12 4"/></svg>
-                    </div>
-                    <div>
-                        <div class="feature-text">Live collaboration rooms</div>
-                        <div class="feature-sub">Collaborate, discuss, and grow with peers in real time</div>
-                    </div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-check">
-                        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 7 5.5 10.5 12 4"/></svg>
-                    </div>
-                    <div>
-                        <div class="feature-text">Video calls & group sessions</div>
-                        <div class="feature-sub">Meet mentors and teammates face-to-face</div>
-                    </div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-check">
-                        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 7 5.5 10.5 12 4"/></svg>
-                    </div>
-                    <div>
-                        <div class="feature-text">Exercises & instant feedback</div>
-                        <div class="feature-sub">Practice on real challenges, see results immediately</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="features-visual reveal">
-            <div class="features-visual-inner">
-                <div class="feat-row">
-                    <div class="feat-icon" style="background:#fff7ed">
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="3" stroke="#f97316" stroke-width="1.8"/><path d="M6 9h6M9 6v6" stroke="#f97316" stroke-width="1.8" stroke-linecap="round"/></svg>
-                    </div>
-                    <div>
-                        <div class="feat-name">Workspaces</div>
-                        <div class="feat-sub">12 active projects</div>
-                    </div>
-                    <div class="feat-badge badge-orange">Active</div>
-                </div>
-                <div class="feat-row">
-                    <div class="feat-icon" style="background:#f5f3ff">
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 3h14a1 1 0 011 1v8a1 1 0 01-1 1H5l-3 4V4a1 1 0 011-1z" stroke="#7c3aed" stroke-width="1.8"/></svg>
-                    </div>
-                    <div>
-                        <div class="feat-name">Chat</div>
-                        <div class="feat-sub">9 new messages</div>
-                    </div>
-                    <div class="feat-badge badge-purple">9 new</div>
-                </div>
-                <div class="feat-row">
-                    <div class="feat-icon" style="background:#f0fdf4">
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="1" y="5" width="11" height="8" rx="2" stroke="#16a34a" stroke-width="1.8"/><path d="M12 8l5-3v8l-5-3" stroke="#16a34a" stroke-width="1.8" stroke-linejoin="round"/></svg>
-                    </div>
-                    <div>
-                        <div class="feat-name">Video calls</div>
-                        <div class="feat-sub">3 rooms live now</div>
-                    </div>
-                    <div class="feat-badge badge-green">Live</div>
-                </div>
-                <div class="feat-row">
-                    <div class="feat-icon" style="background:#fffbeb">
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 14 L6 7 L10 10 L13.5 4" stroke="#d97706" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </div>
-                    <div>
-                        <div class="feat-name">Progress</div>
-                        <div class="feat-sub">68% avg completion</div>
-                    </div>
-                    <div class="feat-badge" style="background:#fffbeb;color:#d97706">68%</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-{{-- ── SUPPORT / CONTACT ── --}}
-<section class="support" id="support">
-    <div class="support-inner">
-        <div>
-            <div class="section-tag tag-orange reveal">Need support?</div>
-            <h2 class="section-title reveal">We're here to help you succeed</h2>
-            <p class="section-sub reveal" style="margin-bottom: 2rem;">Our team is available to answer your questions, solve technical problems, and guide your learning journey.</p>
-            <div class="support-visual reveal">
-                <div class="support-card">
-                    <div class="support-icon" style="background:#fff7ed">
-                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M2 3h18a1 1 0 011 1v10a1 1 0 01-1 1H6l-4 5V4a1 1 0 011-1z" stroke="#f97316" stroke-width="1.8"/></svg>
-                    </div>
-                    <div>
-                        <div class="support-card-title">Live Chat</div>
-                        <div class="support-card-sub">Chat with our team in real time</div>
-                    </div>
-                </div>
-                <div class="support-card">
-                    <div class="support-icon" style="background:#f5f3ff">
-                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="#7c3aed" stroke-width="1.8"/><path d="M11 8v4l3 3" stroke="#7c3aed" stroke-width="1.8" stroke-linecap="round"/></svg>
-                    </div>
-                    <div>
-                        <div class="support-card-title">Fast response</div>
-                        <div class="support-card-sub">Average reply time under 2 hours</div>
-                    </div>
-                </div>
-                <div class="support-card">
-                    <div class="support-icon" style="background:#f0fdf4">
-                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </div>
-                    <div>
-                        <div class="support-card-title">Knowledge base</div>
-                        <div class="support-card-sub">Hundreds of guides and tutorials</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="reveal">
-            <div style="background: var(--c-bg); border: 1px solid var(--c-border); border-radius: 20px; padding: 2rem;">
-                <h3 style="font-family:'Sora',sans-serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--c-text);">Send us a message</h3>
-                <div class="form-grid">
-                    <div class="form-row">
-                        <div class="form-field">
-                            <label>First name</label>
-                            <input type="text" placeholder="Youness">
-                        </div>
-                        <div class="form-field">
-                            <label>Last name</label>
-                            <input type="text" placeholder="Ait">
+        <section class="section" id="features">
+            <div class="container">
+                <div class="section-card reveal">
+                    <div class="section-head">
+                        <div>
+                            <div class="section-kicker">
+                                <span class="dot"></span>
+                                Core features
+                            </div>
+                            <h2 class="section-title">Everything you need for a better learning flow</h2>
+                            <p class="section-subtitle">
+                                Clean structure, clear navigation, and a dashboard-inspired UI for students and teachers.
+                            </p>
                         </div>
                     </div>
-                    <div class="form-field">
-                        <label>Email address</label>
-                        <input type="email" placeholder="youness@example.com">
+
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon blue">
+                                <svg width="24" height="24" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <rect x="2" y="2" width="7" height="7" rx="2"></rect>
+                                    <rect x="11" y="2" width="7" height="7" rx="2"></rect>
+                                    <rect x="2" y="11" width="7" height="7" rx="2"></rect>
+                                    <rect x="11" y="11" width="7" height="7" rx="2"></rect>
+                                </svg>
+                            </div>
+                            <div class="feature-title">Workspaces</div>
+                            <div class="feature-desc">Group students and teachers inside focused spaces built around real courses and collaboration.</div>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon violet">
+                                <svg width="24" height="24" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <path d="M3 5h14M3 9h10M3 13h12" stroke-linecap="round"></path>
+                                </svg>
+                            </div>
+                            <div class="feature-title">Lessons</div>
+                            <div class="feature-desc">Keep learning material structured and easy to follow, whether it is text, links, videos, or files.</div>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon cyan">
+                                <svg width="24" height="24" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <path d="M3 15L7 8l4 3.5L14.5 5 18 9" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </div>
+                            <div class="feature-title">Exercises</div>
+                            <div class="feature-desc">Practice directly after every lesson and keep the learning momentum inside the same platform.</div>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon blue">
+                                <svg width="24" height="24" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <rect x="1.5" y="5" width="11" height="8" rx="2"></rect>
+                                    <path d="M12.5 8l5-3v8l-5-3" stroke-linejoin="round"></path>
+                                </svg>
+                            </div>
+                            <div class="feature-title">Live rooms</div>
+                            <div class="feature-desc">Open discussions, exchange ideas, and jump into video sessions without leaving the workspace.</div>
+                        </div>
                     </div>
-                    <div class="form-field">
-                        <label>Subject</label>
-                        <input type="text" placeholder="What do you need help with?">
-                    </div>
-                    <div class="form-field">
-                        <label>Message</label>
-                        <textarea placeholder="Tell us more about your issue or question..."></textarea>
-                    </div>
-                    <button class="btn-submit">Send message →</button>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
+        </section>
 
-{{-- ── FOOTER ── --}}
-<footer>
-    <a href="/" class="footer-logo">
-        <div class="footer-logo-icon">Y</div>
-        <span class="footer-logo-txt">WithYou</span>
-    </a>
-    <div class="footer-links">
-        <a href="#how-it-works">How it works</a>
-        <a href="#support">Support</a>
-        @if (Route::has('login'))
-            @auth
-                <a href="{{ url('/dashboard') }}">Dashboard</a>
-            @else
-                <a href="{{ route('login') }}">Log in</a>
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}">Register</a>
-                @endif
-            @endauth
-        @endif
-    </div>
-    <div class="footer-copy">© {{ date('Y') }} WithYou. Built with ❤️ for every learner.</div>
-</footer>
+        <section class="section" id="how-it-works">
+            <div class="container">
+                <div class="section-card reveal">
+                    <div class="section-head">
+                        <div>
+                            <div class="section-kicker">
+                                <span class="dot"></span>
+                                How it works
+                            </div>
+                            <h2 class="section-title">A simple flow for students and teachers</h2>
+                            <p class="section-subtitle">
+                                From joining the platform to collaborating inside workspaces, everything stays clear and consistent.
+                            </p>
+                        </div>
+                    </div>
 
-<script>
-    function toggleTheme() {
-        const html = document.documentElement;
-        const isDark = html.classList.toggle('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    }
-    function toggleMenu() {
-        document.getElementById('mobileMenu').classList.toggle('open');
-    }
-    (function() {
-        const saved = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (saved === 'dark' || (!saved && prefersDark)) {
-            document.documentElement.classList.add('dark');
+                    <div class="steps-grid">
+                        <div class="step-card">
+                            <div class="step-num">01</div>
+                            <div class="step-title">Create your account</div>
+                            <div class="step-desc">Sign up in seconds and access the platform with a clean, distraction-free experience.</div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">02</div>
+                            <div class="step-title">Join a workspace</div>
+                            <div class="step-desc">Enter your learning space and see your courses, lessons, and collaboration rooms immediately.</div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">03</div>
+                            <div class="step-title">Follow your lessons</div>
+                            <div class="step-desc">Move through structured content and keep everything organized from one dashboard.</div>
+                        </div>
+
+                        <div class="step-card">
+                            <div class="step-num">04</div>
+                            <div class="step-title">Practice and collaborate</div>
+                            <div class="step-desc">Complete exercises, talk with your team, and stay active through live discussion rooms.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="container">
+                <div class="cta-box reveal">
+                    <div class="cta-inner">
+                        <div>
+                            <h2 class="cta-title">Ready to start with WithYou?</h2>
+                            <p class="cta-sub">
+                                A welcome page with the same clean vibe as your dashboard: modern, academic, and focused on learning.
+                            </p>
+                        </div>
+
+                        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                            @if (Route::has('register'))
+                                <a href="{{ route('register') }}" class="btn btn-primary">Create account</a>
+                            @endif
+
+                            @if (Route::has('login'))
+                                <a href="{{ route('login') }}" class="btn btn-secondary">Sign in</a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container">
+                <div class="footer-card">
+                    <div class="footer-left">
+                        <div class="brand-mark" style="width:38px;height:38px;border-radius:12px;">W</div>
+                        <div>
+                            <div style="font-family:'Sora',sans-serif;font-weight:800;">WithYou</div>
+                            <div class="footer-copy">Built for focused learning and better collaboration.</div>
+                        </div>
+                    </div>
+
+                    <div class="footer-links">
+                        <a href="#features">Features</a>
+                        <a href="#how-it-works">How it works</a>
+                        @if (Route::has('login'))
+                            @auth
+                                <a href="{{ url('/dashboard') }}">Dashboard</a>
+                            @else
+                                <a href="{{ route('login') }}">Login</a>
+                                @if (Route::has('register'))
+                                    <a href="{{ route('register') }}">Register</a>
+                                @endif
+                            @endauth
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('light')) {
+                html.classList.remove('light');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.classList.add('light');
+                localStorage.setItem('theme', 'light');
+            }
         }
-    })();
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-</script>
 
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('open');
+        }
+
+        (function () {
+            const html = document.documentElement;
+            const savedTheme = localStorage.getItem('theme');
+            const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+
+            if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
+                html.classList.add('light');
+            }
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.12 });
+
+            document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+        })();
+    </script>
 </body>
 </html>
