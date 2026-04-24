@@ -1,75 +1,251 @@
 <x-guest-layout>
-    <div class="flex items-center justify-center min-h-screen bg-gray-100">
-        <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-md">
+    <div style="
+        border: 1px solid var(--border);
+        background: linear-gradient(180deg, var(--surface), var(--surface-2));
+        border-radius: 28px;
+        padding: 28px;
+        box-shadow: var(--shadow-md);
+    ">
+        <div style="margin-bottom: 22px;">
+            <div style="
+                display:inline-flex;
+                align-items:center;
+                gap:8px;
+                border-radius:999px;
+                padding:8px 12px;
+                font-size:.76rem;
+                font-weight:800;
+                letter-spacing:.08em;
+                text-transform:uppercase;
+                color:#93c5fd;
+                background: rgba(37,99,235,.14);
+                border: 1px solid rgba(59,130,246,.25);
+                margin-bottom:14px;
+            ">
+                <span style="width:8px;height:8px;border-radius:999px;background:var(--blue);display:inline-block;"></span>
+                Create account
+            </div>
 
-            <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">
-                Create Account
+            <h2 style="
+                font-family:'Sora',sans-serif;
+                font-size: clamp(1.6rem, 3vw, 2rem);
+                line-height:1.15;
+                font-weight:800;
+                margin-bottom:10px;
+            ">
+                Join WithYou today
             </h2>
 
-            <form id="registerForm" action="{{ route('register') }}" method="POST" class="space-y-5">
-                @csrf
+            <p style="color: var(--muted); line-height: 1.75;">
+                Create your account to access courses, workspaces, exercises, and live collaboration.
+            </p>
+        </div>
 
-                <!-- Name -->
-                <div>
-                    <label class="block text-sm text-gray-600 mb-1">Name</label>
-                    <input type="text" id="name" name="name"
-                        value="{{ old('name') }}"
-                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none">
-                    <small class="error text-red-500 text-sm"></small>
-                </div>
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
 
-                <!-- Email -->
-                <div>
-                    <label class="block text-sm text-gray-600 mb-1">Email</label>
-                    <input type="email" id="email" name="email"
-                        value="{{ old('email') }}"
-                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none">
-                    <small class="error text-red-500 text-sm"></small>
-                </div>
+            <div style="margin-bottom:16px;">
+                <label for="name" style="
+                    display:block;
+                    margin-bottom:8px;
+                    font-size:.92rem;
+                    font-weight:700;
+                    color:var(--text);
+                ">
+                    Full name
+                </label>
 
-                <!-- Password -->
-                <div class="relative">
-                    <label class="block text-sm text-gray-600 mb-1">Password</label>
-                    <input type="password" id="password" name="password"
-                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none">
+                <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name"
+                    style="
+                        width:100%;
+                        padding:14px 16px;
+                        border-radius:16px;
+                        border:1px solid var(--border);
+                        background:var(--surface);
+                        color:var(--text);
+                        outline:none;
+                        transition:.2s ease;
+                        font-size:.95rem;
+                    "
+                    onfocus="this.style.borderColor='#60a5fa'"
+                    onblur="this.style.borderColor='var(--border)'"
+                >
 
-                    <button type="button" onclick="togglePassword('password')"
-                        class="absolute right-3 top-9 text-gray-500 text-sm">
-                        Show
-                    </button>
+                <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            </div>
 
-                    <small class="error text-red-500 text-sm"></small>
-                </div>
+            <div style="margin-bottom:16px;">
+                <label for="email" style="
+                    display:block;
+                    margin-bottom:8px;
+                    font-size:.92rem;
+                    font-weight:700;
+                    color:var(--text);
+                ">
+                    Email address
+                </label>
 
-                <!-- Confirm Password -->
-                <div class="relative">
-                    <label class="block text-sm text-gray-600 mb-1">Confirm Password</label>
-                    <input type="password" id="password_confirmation" name="password_confirmation"
-                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none">
+                <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="username"
+                    style="
+                        width:100%;
+                        padding:14px 16px;
+                        border-radius:16px;
+                        border:1px solid var(--border);
+                        background:var(--surface);
+                        color:var(--text);
+                        outline:none;
+                        transition:.2s ease;
+                        font-size:.95rem;
+                    "
+                    onfocus="this.style.borderColor='#60a5fa'"
+                    onblur="this.style.borderColor='var(--border)'"
+                >
 
-                    <button type="button" onclick="togglePassword('password_confirmation')"
-                        class="absolute right-3 top-9 text-gray-500 text-sm">
-                        Show
-                    </button>
+                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            </div>
 
-                    <small class="error text-red-500 text-sm"></small>
-                </div>
+            <div style="margin-bottom:16px; position:relative;">
+                <label for="password" style="
+                    display:block;
+                    margin-bottom:8px;
+                    font-size:.92rem;
+                    font-weight:700;
+                    color:var(--text);
+                ">
+                    Password
+                </label>
 
-                <!-- Button -->
-                <button type="submit"
-                    class="w-full bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-600 transition duration-200">
-                    Register
+                <input id="password" type="password" name="password" required autocomplete="new-password"
+                    style="
+                        width:100%;
+                        padding:14px 48px 14px 16px;
+                        border-radius:16px;
+                        border:1px solid var(--border);
+                        background:var(--surface);
+                        color:var(--text);
+                        outline:none;
+                        transition:.2s ease;
+                        font-size:.95rem;
+                    "
+                    onfocus="this.style.borderColor='#a78bfa'"
+                    onblur="this.style.borderColor='var(--border)'"
+                >
+
+                <button type="button" onclick="togglePassword('password', this)"
+                    style="
+                        position:absolute;
+                        right:14px;
+                        top:44px;
+                        border:none;
+                        background:transparent;
+                        color:var(--muted);
+                        font-size:.85rem;
+                        font-weight:700;
+                        cursor:pointer;
+                    ">
+                    Show
                 </button>
 
-                <!-- Link -->
-                <p class="text-sm text-center text-gray-600 mt-4">
-                    Already have an account?
-                    <a href="{{ route('login') }}" class="text-indigo-500 hover:underline">
-                        Login
-                    </a>
-                </p>
-            </form>
+                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            </div>
 
-        </div>
+            <div style="margin-bottom:22px; position:relative;">
+                <label for="password_confirmation" style="
+                    display:block;
+                    margin-bottom:8px;
+                    font-size:.92rem;
+                    font-weight:700;
+                    color:var(--text);
+                ">
+                    Confirm password
+                </label>
+
+                <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password"
+                    style="
+                        width:100%;
+                        padding:14px 48px 14px 16px;
+                        border-radius:16px;
+                        border:1px solid var(--border);
+                        background:var(--surface);
+                        color:var(--text);
+                        outline:none;
+                        transition:.2s ease;
+                        font-size:.95rem;
+                    "
+                    onfocus="this.style.borderColor='#a78bfa'"
+                    onblur="this.style.borderColor='var(--border)'"
+                >
+
+                <button type="button" onclick="togglePassword('password_confirmation', this)"
+                    style="
+                        position:absolute;
+                        right:14px;
+                        top:44px;
+                        border:none;
+                        background:transparent;
+                        color:var(--muted);
+                        font-size:.85rem;
+                        font-weight:700;
+                        cursor:pointer;
+                    ">
+                    Show
+                </button>
+
+                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+            </div>
+
+            <button type="submit" style="
+                width:100%;
+                display:inline-flex;
+                align-items:center;
+                justify-content:center;
+                gap:10px;
+                border:none;
+                border-radius:16px;
+                padding:14px 18px;
+                font-size:.96rem;
+                font-weight:800;
+                color:white;
+                cursor:pointer;
+                background: linear-gradient(135deg, var(--blue), var(--violet));
+                box-shadow: 0 12px 30px rgba(37, 99, 235, 0.22);
+                transition:.2s ease;
+            "
+            onmouseover="this.style.transform='translateY(-1px)'"
+            onmouseout="this.style.transform='translateY(0)'"
+            >
+                Create account
+            </button>
+
+            <p style="
+                margin-top:18px;
+                text-align:center;
+                color:var(--muted);
+                font-size:.92rem;
+                line-height:1.7;
+            ">
+                Already have an account?
+                <a href="{{ route('login') }}" style="
+                    color:#93c5fd;
+                    font-weight:800;
+                ">
+                    Sign in
+                </a>
+            </p>
+        </form>
     </div>
+
+    <script>
+        function togglePassword(id, button) {
+            const input = document.getElementById(id);
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.textContent = 'Hide';
+            } else {
+                input.type = 'password';
+                button.textContent = 'Show';
+            }
+        }
+    </script>
 </x-guest-layout>
