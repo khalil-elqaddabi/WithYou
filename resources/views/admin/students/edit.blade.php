@@ -30,7 +30,9 @@
                 <input type="text"
                        name="name"
                        value="{{ old('name', $student->name) }}"
-                       class="w-full border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-500">
+                       class="w-full border-gray-300 rounded-xl px-4 py-2
+       bg-white text-gray-900
+       dark:bg-white dark:text-gray-900"
 
                 @error('name')
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -45,7 +47,9 @@
                 <input type="email"
                        name="email"
                        value="{{ old('email', $student->email) }}"
-                       class="w-full border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-500">
+                       class="w-full border-gray-300 rounded-xl px-4 py-2
+       bg-white text-gray-900
+       dark:bg-white dark:text-gray-900"
 
                 @error('email')
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -60,7 +64,9 @@
                 <input type="password"
                        name="password"
                        placeholder="Leave empty if you don't want to change it"
-                       class="w-full border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-500">
+                       class="w-full border-gray-300 rounded-xl px-4 py-2
+       bg-white text-gray-900
+       dark:bg-white dark:text-gray-900"
 
                 @error('password')
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>

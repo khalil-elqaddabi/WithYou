@@ -26,7 +26,9 @@
                        name="name"
                        value="{{ old('name') }}"
                        placeholder="Student name"
-                       class="w-full border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-500">
+                       class="w-full border-gray-300 rounded-xl px-4 py-2
+       bg-white text-gray-900
+       dark:bg-white dark:text-gray-900"
 
                 @error('name')
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -39,7 +41,9 @@
                        name="email"
                        value="{{ old('email') }}"
                        placeholder="student@example.com"
-                       class="w-full border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-500">
+                       class="w-full border-gray-300 rounded-xl px-4 py-2
+       bg-white text-gray-900
+       dark:bg-white dark:text-gray-900"
 
                 @error('email')
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -51,7 +55,9 @@
                 <input type="password"
                        name="password"
                        placeholder="Minimum 8 characters"
-                       class="w-full border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-indigo-500">
+                       class="w-full border-gray-300 rounded-xl px-4 py-2
+       bg-white text-gray-900
+       dark:bg-white dark:text-gray-900"
 
                 @error('password')
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
