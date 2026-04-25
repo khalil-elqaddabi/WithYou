@@ -6,7 +6,7 @@
             </h2>
 
             <a href="{{ route('admin.teachers.create') }}"
-               class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+                class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
                 + Add Teacher
             </a>
         </div>
@@ -14,14 +14,33 @@
 
     <div class="py-10">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
-            @if(session('success'))
+<a href="{{ route('admin.dashboard') }}"
+   class="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition">
+    ← Back to Dashboard
+</a>
+            @if (session('success'))
                 <div class="mb-4 p-3 bg-green-100 text-green-700 rounded">
                     {{ session('success') }}
                 </div>
             @endif
 
             <div class="bg-white shadow-sm rounded-xl overflow-hidden">
+                <form method="GET" action="{{ route('admin.teachers.index') }}" class="mb-4">
+                    <div class="flex gap-2">
+                        <input type="text" name="search" value="{{ request('search') }}"
+                            placeholder="Search by name or email..." class="w-full border rounded-lg px-4 py-2">
+
+                        <button class="bg-gray-800 text-white px-4 py-2 rounded-lg">
+                            Search
+                        </button>
+                    </div>
+                </form>
+                         @if(request('search'))
+<a href="{{ route('admin.teachers.index') }}"
+   class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
+    Reset
+</a>
+@endif
 
                 <table class="w-full text-left">
                     <thead class="bg-gray-50 text-gray-500 text-sm">
@@ -47,18 +66,17 @@
                                 <td class="p-4 flex gap-2">
 
                                     <a href="{{ route('admin.teachers.show', $teacher) }}"
-                                       class="text-blue-600 hover:underline text-sm">
+                                        class="text-blue-600 hover:underline text-sm">
                                         View
                                     </a>
 
                                     <a href="{{ route('admin.teachers.edit', $teacher) }}"
-                                       class="text-yellow-600 hover:underline text-sm">
+                                        class="text-yellow-600 hover:underline text-sm">
                                         Edit
                                     </a>
 
-                                    <form action="{{ route('admin.teachers.destroy', $teacher) }}"
-                                          method="POST"
-                                          onsubmit="return confirm('Are you sure?')">
+                                    <form action="{{ route('admin.teachers.destroy', $teacher) }}" method="POST"
+                                        onsubmit="return confirm('Are you sure?')">
                                         @csrf
                                         @method('DELETE')
 
