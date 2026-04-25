@@ -8,6 +8,10 @@ use App\Http\Controllers\Teacher\DashboardController as TeacherDashboardControll
 use App\Http\Controllers\Teacher\LessonController;
 use App\Http\Controllers\Teacher\WorkspaceController;
 use App\Http\Controllers\Teacher\ExerciseController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\TeacherController;
+use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\WorkspaceController as AdminWorkspaceController;
 
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 
@@ -33,11 +37,19 @@ Route::middleware(['auth'])->group(function () {
         ->name('workspaces.chat.store');
 
     // ================= ADMIN =================
-    Route::middleware('role:admin')->group(function () {
-        Route::get('/admin/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('admin.dashboard');
-    });
+    Route::middleware(['auth', 'role:admin'])
+        ->prefix('admin')
+        ->name('admin.')
+        ->group(function () {
+            Route::get('/dashboard', [AdminController::class, 'dashboard'])
+                ->name('dashboard');
+
+        Route::resource('teachers', TeacherController::class);
+
+        Route::resource('students', StudentController::class);
+
+        Route::resource('workspaces', AdminWorkspaceController::class);
+        });
 
     // ================= TEACHER =================
     Route::middleware('role:teacher')->group(function () {
