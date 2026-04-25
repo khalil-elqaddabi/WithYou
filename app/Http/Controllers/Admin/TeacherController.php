@@ -9,12 +9,21 @@ use Illuminate\Support\Facades\Hash;
 
 class TeacherController extends Controller
 {
-    public function index()
-    {
-        $teachers = User::where('role', 'teacher')->latest()->get();
+   public function index(Request $request)
+{
+    $query = User::where('role', 'teacher');
 
-        return view('admin.teachers.index', compact('teachers'));
+    if ($request->search) {
+        $query->where(function ($q) use ($request) {
+            $q->where('name', 'like', '%' . $request->search . '%')
+              ->orWhere('email', 'like', '%' . $request->search . '%');
+        });
     }
+
+    $teachers = $query->latest()->get();
+
+    return view('admin.teachers.index', compact('teachers'));
+}
 
     public function create()
     {
