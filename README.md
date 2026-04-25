@@ -1,59 +1,197 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<br />
 
-## About Laravel
+# WithYou
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### The e-learning platform built for real classrooms.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**WithYou** brings teachers, students, and content together in one structured workspace —
+no scattered tools, no confusion, just focused learning.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<br />
 
-## Learning Laravel
+![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=flat-square&logo=laravel&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+<br />
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+</div>
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## What is WithYou?
 
-### Premium Partners
+Most online learning setups are messy — courses live in one tool, files in another, communication somewhere else. **WithYou fixes that.**
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+It's a role-based e-learning platform where teachers build structured workspaces, students follow courses and lessons, and admins keep everything running. Everything in one place, everyone on the same page.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Highlights
 
-## Code of Conduct
+- **Role-based by design** — Admin, Teacher, and Student each get a fully scoped experience with their own dashboard, routes, and permissions.
+- **Workspace-first model** — All learning happens inside workspaces. Teachers own them, students join them.
+- **Structured content** — Courses → Lessons → Exercises. A clear hierarchy that mirrors real classroom logic.
+- **Rich lesson types** — Text, PDF attachments, external links — teachers can combine them freely.
+- **Clean, fast UI** — Built with Tailwind CSS and Blade components. Light/dark mode supported.
+- **Search everywhere** — Admins can search across teachers, students, and workspaces instantly.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## Who it's for
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| Role | What they do |
+|---|---|
+| **Admin** | Manages users, monitors the platform, views all workspaces and stats |
+| **Teacher** | Creates workspaces, builds courses and lessons, enrolls students |
+| **Student** | Joins workspaces, follows lessons, completes exercises |
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Backend | Laravel 11 |
+| Frontend | Blade + Tailwind CSS |
+| Build tool | Vite |
+| Database | MySQL |
+| Auth | Laravel Breeze + custom role middleware |
+| Version control | Git |
+
+---
+
+## Architecture
+
+```
+withyou/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Admin/          # Platform-wide management
+│   │   │   ├── Teacher/        # Workspace & content control
+│   │   │   └── Student/        # Read & learn
+│   │   └── Middleware/         # Role guards
+│   └── Models/                 # User · Workspace · Course · Lesson · Exercise
+├── resources/
+│   └── views/
+│       ├── admin/
+│       ├── teacher/
+│       └── student/
+├── routes/
+│   └── web.php                 # Scoped per role
+└── database/
+    └── migrations/
+```
+
+**Every role is fully isolated.** A student can't access teacher routes. A teacher can't touch admin pages. Middleware enforces it at every level.
+
+---
+
+## Getting Started
+
+**Requirements:** PHP 8.2+, Composer, Node.js 18+, MySQL
+
+```bash
+# Clone
+git clone https://github.com/khalil-elqaddabi/withyou.git
+cd withyou
+
+# Install dependencies
+composer install && npm install
+
+# Environment
+cp .env.example .env
+php artisan key:generate
+
+# Database — update .env with your credentials, then:
+php artisan migrate
+
+# Run
+php artisan serve
+npm run dev
+```
+
+### Demo accounts
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | admin@example.com | password |
+| Teacher | teacher@example.com | password |
+| Student | student@example.com | password |
+
+---
+
+## UI & UX
+
+WithYou ships with a consistent design system across all three roles:
+
+- **Light & dark mode** — persisted via `localStorage`, respects system preference
+- **Responsive layout** — works on desktop and tablet out of the box
+- **Component-based** — Blade components keep views clean and reusable
+- **Contextual navigation** — each role sees only what's relevant to them
+
+---
+
+## Current Status
+
+| Module | Status |
+|---|---|
+| Authentication & roles | ✅ Stable |
+| Admin dashboard | ✅ Stable |
+| Teacher dashboard | ✅ Stable |
+| Student dashboard | ✅ Stable |
+| Workspaces | ✅ Stable |
+| Courses & lessons | ✅ Stable |
+| Exercises | ⚡ Basic |
+| Real-time chat | 🔜 Planned |
+| Video calls | 🔜 Planned |
+| Analytics & charts | 🔜 Planned |
+
+---
+
+## Roadmap
+
+The foundation is solid. Here's what comes next:
+
+- **Real-time chat** — per-workspace messaging with Laravel Echo + Pusher
+- **Video calls** — live session support via WebRTC or a third-party SDK
+- **Analytics** — lesson completion rates, student progress, Chart.js dashboards
+- **Notifications** — in-app alerts for new lessons, exercises, and enrollments
+- **Advanced search** — filters by date, role, subject, and workspace
+- **Mobile polish** — fully responsive across all screen sizes
+
+---
+
+## Why this project?
+
+WithYou started as a portfolio project with a real goal: prove that a clean, production-grade Laravel app can be built with good architecture, proper role separation, and a UI that actually looks professional.
+
+It demonstrates:
+
+```
+✔  Laravel MVC architecture
+✔  Role-based access control (RBAC)
+✔  Multi-role authentication with Breeze
+✔  Reusable Blade component system
+✔  Full CRUD across all roles
+✔  Clean, consistent UI with Tailwind CSS
+✔  Separation of concerns at every layer
+```
+
+---
+
+## Author
+
+**Khalil El Qaddabi** — Full Stack Developer
+
+
+---
+
+<div align="center">
+<sub>Built with care. Designed to grow.</sub>
+</div>
