@@ -90,7 +90,7 @@ class LessonController extends Controller
         abort_if($course->workspace_id !== $workspace->id, 404);
         abort_if($lesson->course_id !== $course->id, 404);
 
-         $lesson->load('resources');
+        $lesson->load('resources');
 
         return view('teacher.lessons.show', compact('workspace', 'course', 'lesson'));
     }
@@ -100,6 +100,8 @@ class LessonController extends Controller
         abort_if($workspace->teacher_id !== auth()->id(), 403);
         abort_if($course->workspace_id !== $workspace->id, 404);
         abort_if($lesson->course_id !== $course->id, 404);
+
+        $lesson->load('resources');
 
         return view('teacher.lessons.edit', compact('workspace', 'course', 'lesson'));
     }
@@ -114,24 +116,51 @@ class LessonController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'subject' => 'nullable|string',
-            'links' => 'nullable|string',
-            'file' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,zip|max:20480',
             'image' => 'nullable|image|max:4096',
+
+            'resources' => 'nullable|array',
+            'resources.*.title' => 'nullable|string|max:255',
+            'resources.*.type' => 'nullable|in:link,file',
+            'resources.*.url' => 'nullable|url',
+            'resources.*.file' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,zip|max:20480',
         ]);
 
-        if ($request->hasFile('file')) {
-            $data['file'] = $request->file('file')->store('lessons/files', 'public');
-        } else {
-            unset($data['file']);
-        }
+        $lesson->resources()->delete();
 
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('lessons/images', 'public');
-        } else {
-            unset($data['image']);
-        }
+        if ($request->has('resources')) {
+            foreach ($request->resources as $key => $resource) {
 
-        $lesson->update($data);
+                if (empty($resource['title']) || empty($resource['type'])) {
+                    continue;
+                }
+
+                // LINK
+                if ($resource['type'] === 'link') {
+                    $lesson->resources()->create([
+                        'title' => $resource['title'],
+                        'type' => 'link',
+                        'url' => $resource['url'] ?? null,
+                        'path' => null,
+                    ]);
+                }
+
+                
+                if ($resource['type'] === 'file') {
+
+                    if ($request->hasFile("resources.$key.file")) {
+
+                        $file = $request->file("resources.$key.file");
+
+                        $lesson->resources()->create([
+                            'title' => $resource['title'],
+                            'type' => 'file',
+                            'url' => null,
+                            'path' => $file->store('lessons/files', 'public'),
+                        ]);
+                    }
+                }
+            }
+        }
 
         return redirect()->route('teacher.courses.lessons.index', [$workspace, $course])
             ->with('success', 'Lesson updated successfully.');
