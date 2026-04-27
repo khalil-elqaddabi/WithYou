@@ -256,34 +256,32 @@
                         Back
                     </a>
                 </div>
-
-                @if ($lesson->links || $lesson->file)
+                @if ($lesson->resources->count())
                     <div class="lesson-extra">
-                        @if ($lesson->links)
+                        @foreach ($lesson->resources as $resource)
                             <div class="lesson-box">
-                                <h3 class="lesson-box-title">Links</h3>
-                                <a href="{{ $lesson->links }}" target="_blank" class="lesson-link">
-                                    Open Link →
-                                </a>
-                            </div>
-                        @endif
+                                <h3 class="lesson-box-title">{{ $resource->title }}</h3>
 
-                        @if ($lesson->file)
-                            <div class="lesson-box">
-                                <h3 class="lesson-box-title">File / PDF</h3>
-
-                                <div class="lesson-file-row">
-                                    <div class="lesson-file-name">
-                                        {{ basename($lesson->file) }}
-                                    </div>
-
-                                    <a href="{{ asset('storage/' . $lesson->file) }}" target="_blank"
-                                        class="lesson-link">
-                                        Open File →
+                                @if ($resource->type === 'link')
+                                    <a href="{{ $resource->url }}" target="_blank" class="lesson-link">
+                                        Open Link →
                                     </a>
-                                </div>
+                                @endif
+
+                                @if ($resource->type === 'file')
+                                    <div class="lesson-file-row">
+                                        <div class="lesson-file-name">
+                                            {{ basename($resource->path) }}
+                                        </div>
+
+                                        <a href="{{ asset('storage/' . $resource->path) }}" target="_blank"
+                                            class="lesson-link">
+                                            Open File →
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
-                        @endif
+                        @endforeach
                     </div>
                 @endif
             </div>

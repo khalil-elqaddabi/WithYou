@@ -9,15 +9,15 @@ class Lesson extends Model
 {
     use HasFactory;
 
-  protected $fillable = [
-    'course_id',
-    'title',
-    'description',
-    'subject',
-    'links',
-    'file',
-    'image',
-];
+    protected $fillable = [
+        'course_id',
+        'title',
+        'description',
+        'subject',
+        'links',
+        'file',
+        'image',
+    ];
 
     public function course()
     {
@@ -25,7 +25,12 @@ class Lesson extends Model
     }
 
     public function exercises()
-{
-    return $this->hasMany(Exercise::class);
-}
+    {
+        return $this->hasMany(Exercise::class);
+    }
+
+    public function resources()
+    {
+        return $this->hasMany(\App\Models\LessonResource::class);
+    }
 }
